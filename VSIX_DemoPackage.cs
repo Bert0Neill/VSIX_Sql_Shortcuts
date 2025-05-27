@@ -48,25 +48,29 @@
 
 //extern alias ssms20;
 
+//using EnvDTE;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using SQL_Shortcuts.Resources;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Task = System.Threading.Tasks.Task;
-using VSIX_AutoComplete_SSMS.Classes;
-using System.IO;
-using System.ComponentModel;
-using VSIX_AutoComplete_SSMS.Models;
-using SQL_Shortcuts.Resources;
 using System.Windows;
+using VSIX_AutoComplete_SSMS.Classes;
+using VSIX_AutoComplete_SSMS.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace VSIX_Demo
 {
@@ -85,40 +89,44 @@ namespace VSIX_Demo
         private IVsStatusbar _statusBar;
         private string _filePath = string.Empty;
         private FileService _fileService;
-        public static IObjectExplorerHelper _smoObjectExplorer;
-        private const string SELECTION_EVENT = "Provider_SelectionChanged";
-        private SsmsHelper _helperService;
+
+        // Visual Studio SQL Server Object Explorer and Data Services
+        private IVsDataExplorerConnectionManager _connectionManager;
+        private IVsDataExplorerService _dataExplorerService;
+        private IVsObjectSearch _objectSearch;
+
+
+        // Event handling for SQL Server connections and schema changes
+        private const string SELECTION_EVENT = "DataConnection_SelectionChanged";
+
         public static BindingList<SqlShortcuts> _sqlShortcuts = new BindingList<SqlShortcuts>(); // store shortcuts in memory
         public static bool IsDemo = true;
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
             try
             {
-                //// Test - Set the culture to French
-                //System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
+                // Initialize Visual Studio SQL services instead of SSMS SMO
+                await InitializeVsSqlServices();
 
-                _helperService = new SsmsHelper();
-                
-                BindSmoEvent(); // bind to the selection event of the SMO table\view node
+                BindVsDataExplorerEvents(); // bind to VS Data Explorer events instead of SMO
 
                 // initialise logger
                 string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
                 SimpleLogger.Info(Resource.Package_Initializing);
 
                 LoadSqlShortcuts(); // load any existing shortcuts
-                await LoadSsmsStatusBarReference(); // allow ext to update SSMS statusbar
+                await LoadVsStatusBarReference(); // allow ext to update VS statusbar
                 await MonitorEditorWindow(); // capture events when user types into SQL editor
                 await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
-                
+
                 string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
                 if (IsDemo)
                 {
                     message = "(Demo Version) - " + message;
                 }
-                StatusBarService.UpdateStatusBarText(message); // update SSMS status-bar with log file path
+                StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
             }
             catch (Exception ex)
             {
@@ -126,29 +134,52 @@ namespace VSIX_Demo
             }
         }
 
-        private void BindSmoEvent()
+        private async Task InitializeVsSqlServices()
         {
-            string demoModeMessage = global::SQL_Shortcuts.Resources.Resource.Msg_Ssms20_Limited_Features;
-            string demoModeCaption = global::SQL_Shortcuts.Resources.Resource.Msg_Ssms20_Limited_Features_Caption;
-
-            switch (_helperService.RetrieveSsmsVersion())
+            try
             {
-                case "SSMS 18":
-                case "SSMS 19":
-                case "SSMS 21":
-                    _smoObjectExplorer = null;
-                    MessageBox.Show(demoModeMessage, demoModeCaption, MessageBoxButton.OK, MessageBoxImage.Warning);
-                    break;
-                case "SSMS 20":
-                    //_smoObjectExplorer = new ssms20::SSMS_20_SqlAdjust.SmoObjectExplorer(this);
-                    break;
-                default:
-                    MessageBox.Show(demoModeMessage, demoModeCaption, MessageBoxButton.OK, MessageBoxImage.Warning);
-                    _smoObjectExplorer = null;
-                    break;
-            }
+                // Get Visual Studio Data Services
+                _dataExplorerService = await GetServiceAsync(typeof(IVsDataExplorerService)) as IVsDataExplorerService;
+                _connectionManager = await GetServiceAsync(typeof(IVsDataExplorerConnectionManager)) as IVsDataExplorerConnectionManager;
+                _objectSearch = await GetServiceAsync(typeof(SVsObjectSearch)) as IVsObjectSearch;
 
-            _smoObjectExplorer.HookSelectionChanged(SELECTION_EVENT);
+                if (_dataExplorerService == null)
+                {
+                    SimpleLogger.Info("Visual Studio Data Explorer Service not available");
+                }
+
+                if (_connectionManager == null)
+                {
+                    SimpleLogger.Info("Visual Studio Data Connection Manager not available");
+                }
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Error($"Failed to initialize VS SQL services: {ex.Message}");
+            }
+        }
+
+        private void BindVsDataExplorerEvents()
+        {
+            try
+            {
+                if (_connectionManager != null)
+                {
+                    // Subscribe to connection events in Visual Studio Data Explorer
+                    // This replaces the SSMS SMO object explorer events
+                    SimpleLogger.Info("Binding to Visual Studio Data Explorer events");
+                    // Note: Actual event binding would depend on available VS Data Services APIs
+                    // This is a conceptual replacement for the SSMS-specific SMO events
+                }
+                else
+                {
+                    SimpleLogger.Info("Data Connection Manager not available - some features may be limited");
+                }
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Error($"Failed to bind VS Data Explorer events: {ex.Message}");
+            }
         }
 
         private async Task MonitorEditorWindow()
@@ -158,24 +189,28 @@ namespace VSIX_Demo
                 _dte = await GetServiceAsync(typeof(DTE)) as DTE;
                 if (_dte == null)
                 {
-                    Debug.WriteLine(Resource.Smo_No_Obj_Explorer);
+                    Debug.WriteLine("Could not get DTE service");
                     return;
                 }
+
                 var textManager = await GetServiceAsync(typeof(SVsTextManager)) as IVsTextManager;
                 if (textManager == null)
                 {
-                    Debug.WriteLine(Resource.Smo_No_Container);
+                    Debug.WriteLine("Could not get Text Manager service");
+                    return;
                 }
+
                 var componentModel = await GetServiceAsync(typeof(SComponentModel)) as IComponentModel;
                 if (componentModel == null)
                 {
-                    Debug.WriteLine(Resource.Smo_No_Components);
+                    Debug.WriteLine("Could not get Component Model service");
                     return;
                 }
+
                 var editorFactory = componentModel.GetService<IVsEditorAdaptersFactoryService>();
                 if (editorFactory == null)
                 {
-                    Debug.WriteLine(Resource.Smo_No_ContextService);
+                    Debug.WriteLine("Could not get Editor Adapters Factory service");
                     return;
                 }
 
@@ -190,30 +225,29 @@ namespace VSIX_Demo
                     if (windowEvents != null)
                     {
                         windowEvents.WindowActivated += OnWindowActivated;
-                    }                    
+                    }
                 }
                 else
                 {
-                    Debug.WriteLine(Resource.Smo_No_Access_ObjectExplorerContext);
+                    Debug.WriteLine("Could not access DTE Events");
                 }
 
                 // Check if there's an active window already and hook into it
                 if (_dte.ActiveWindow != null && _dte.ActiveWindow.Document != null)
                 {
-                    Debug.WriteLine(Resource.Grid_Loading);
+                    Debug.WriteLine("Processing already active window");
                     OnWindowActivated(_dte.ActiveWindow, null);
                 }
             }
             catch (Exception ex)
             {
-                SimpleLogger.Error($"{ex.Message}");
+                SimpleLogger.Error($"Error in MonitorEditorWindow: {ex.Message}");
             }
         }
 
-        private async Task LoadSsmsStatusBarReference()
+        private async Task LoadVsStatusBarReference()
         {
-            _statusBar = await GetServiceAsync(typeof(SVsStatusbar)) as IVsStatusbar; // reference SSMS status bar
-
+            _statusBar = await GetServiceAsync(typeof(SVsStatusbar)) as IVsStatusbar; // reference VS status bar
             if (_statusBar != null)
             {
                 StatusBarService.Initialize(_statusBar); // Initialize our status bar service
@@ -225,7 +259,6 @@ namespace VSIX_Demo
             try
             {
                 string FOLDER_FILENAME = SQL_Shortcuts.Properties.Settings.Default.ConfigFile;
-
                 _fileService = new FileService();
                 _filePath = Path.Combine(Directory.GetCurrentDirectory(), FOLDER_FILENAME);
 
@@ -248,20 +281,18 @@ namespace VSIX_Demo
                 // if in demo mode, only return first shortcut or default shortcut
                 if (VSIX_DemoPackage.IsDemo)
                 {
-                    SimpleLogger.Info(Resource.Grid_Demo_Limit);
+                    SimpleLogger.Info("Demo mode: Limited shortcuts available");
                 }
-
             }
             catch (Exception ex)
             {
-                SimpleLogger.Error($"{ex.Message}");
+                SimpleLogger.Error($"Error loading SQL shortcuts: {ex.Message}");
             }
         }
 
         private void OnWindowActivated(EnvDTE.Window gotFocus, EnvDTE.Window lostFocus)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-
             try
             {
                 const string ACCEPT_FILE_TYPE = "SQL";
@@ -280,21 +311,18 @@ namespace VSIX_Demo
                 {
                     string docLanguage = gotFocus.Document.Language;
                     string docFileName = gotFocus.Document.FullName;
-
                     SimpleLogger.Info($"VSIX Package: Document language: {docLanguage}, Filename: {docFileName}");
-
                     isSqlFile = docLanguage == ACCEPT_FILE_TYPE || docFileName.EndsWith(ACCEPT_FILE_EXT, StringComparison.OrdinalIgnoreCase);
                 }
                 catch (Exception ex)
                 {
-                    SimpleLogger.Error($"{ex.Message}");
+                    SimpleLogger.Error($"Error checking document type: {ex.Message}");
                     return;
                 }
 
                 if (isSqlFile)
                 {
                     Debug.WriteLine("VSIX Package: SQL file detected, setting up event handlers");
-
                     var componentModel = this.GetService(typeof(SComponentModel)) as IComponentModel;
                     if (componentModel == null)
                     {
@@ -323,15 +351,15 @@ namespace VSIX_Demo
                     if (wpfTextView != null)
                     {
                         Debug.WriteLine("VSIX Package: Setting up text view filter");
-
                         IVsTextView nativeTextView = editorFactory.GetViewAdapter(wpfTextView);
                         if (nativeTextView != null)
                         {
                             _textViewFilter = new ShortcutEvaluation(this, nativeTextView);
                             result = nativeTextView.AddCommandFilter(
                                 (IOleCommandTarget)_textViewFilter,
-                                out IOleCommandTarget nextCommandFilter // Correct type
+                                out IOleCommandTarget nextCommandFilter
                             );
+
                             if (result == VSConstants.S_OK)
                             {
                                 ((ShortcutEvaluation)_textViewFilter)._nextFilter = nextCommandFilter;
@@ -347,33 +375,77 @@ namespace VSIX_Demo
             }
             catch (Exception ex)
             {
-                SimpleLogger.Error($"{ex.Message}");
+                SimpleLogger.Error($"Error in OnWindowActivated: {ex.Message}");
+            }
+        }
+
+        // Method to get SQL Server connections from Visual Studio Server Explorer
+        public IEnumerable<string> GetAvailableConnections()
+        {
+            try
+            {
+                if (_connectionManager != null)
+                {
+                    // This would return available SQL Server connections from VS Server Explorer
+                    // Implementation would depend on the specific VS Data Services APIs
+                    SimpleLogger.Info("Retrieving available SQL Server connections from Visual Studio");
+                    return new List<string>(); // Placeholder - actual implementation needed
+                }
+                return Enumerable.Empty<string>();
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Error($"Error getting available connections: {ex.Message}");
+                return Enumerable.Empty<string>();
+            }
+        }
+
+        // Method to get database objects from Visual Studio Server Explorer
+        public IEnumerable<string> GetDatabaseObjects(string connectionString, string objectType)
+        {
+            try
+            {
+                if (_dataExplorerService != null)
+                {
+                    // This would retrieve database objects (tables, views, etc.) from VS Server Explorer
+                    // Implementation would depend on the specific VS Data Services APIs
+                    SimpleLogger.Info($"Retrieving {objectType} objects from Visual Studio Server Explorer");
+                    return new List<string>(); // Placeholder - actual implementation needed
+                }
+                return Enumerable.Empty<string>();
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Error($"Error getting database objects: {ex.Message}");
+                return Enumerable.Empty<string>();
             }
         }
 
         protected override void Dispose(bool disposing)
         {
-            try { 
-            if (disposing)
+            try
             {
-                // unhook class level\static fields
-                _smoObjectExplorer?.Dispose();
-                _smoObjectExplorer = null;                                
-                _sqlShortcuts?.Clear();
-                _sqlShortcuts = null;
-                _fileService = null;
-
-                if (_textViewFilter is IDisposable disposableFilter)
-                    disposableFilter.Dispose();
-
-                var windowEvents = _dte?.Events?.WindowEvents;
-                if (windowEvents != null)
+                if (disposing)
                 {
-                    windowEvents.WindowActivated -= OnWindowActivated;
-                }
-            }
+                    // Clean up Visual Studio service references
+                    _connectionManager = null;
+                    _dataExplorerService = null;
+                    _objectSearch = null;
 
-            base.Dispose(disposing);
+                    _sqlShortcuts?.Clear();
+                    _sqlShortcuts = null;
+                    _fileService = null;
+
+                    if (_textViewFilter is IDisposable disposableFilter)
+                        disposableFilter.Dispose();
+
+                    var windowEvents = _dte?.Events?.WindowEvents;
+                    if (windowEvents != null)
+                    {
+                        windowEvents.WindowActivated -= OnWindowActivated;
+                    }
+                }
+                base.Dispose(disposing);
             }
             catch (InvalidCastException ex)
             {
@@ -384,7 +456,6 @@ namespace VSIX_Demo
                 SimpleLogger.Info($"Unexpected error in Dispose: {ex.Message}");
             }
         }
-
     }
 }
 

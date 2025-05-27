@@ -252,6 +252,10 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\Application\Microsoft.SqlServer.Management.SqlStudio.Explorer.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Data.Services, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.Data.Services.dll</HintPath>
+    </Reference>
     <Reference Include="ObjectExplorer">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\ObjectExplorer.dll</HintPath>
       <Private>False</Private>
@@ -359,6 +363,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK">
       <Version>15.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0">
+      <Version>15.0.26606</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.10.2185" />
     <PackageReference Include="System.Threading.Channels">
@@ -547,17 +554,6 @@
     <EmbeddedResource Include="Resources\Resource.zh.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SSMS_20_SqlAdjust\SSMS_SqlAdjust.20.csproj">
-      <Project>{a816f21f-48ad-49dd-8776-d1a9f264a509}</Project>
-      <Name>SSMS_SqlAdjust.20</Name>
-      <Aliases>ssms20</Aliases>
-    </ProjectReference>
-    <ProjectReference Include="..\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
-      <Project>{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}</Project>
-      <Name>SSMS_SqlAdjust_Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
