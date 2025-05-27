@@ -107,6 +107,7 @@ namespace VSIX_Demo
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             try
             {
+
                 // Initialize Visual Studio SQL services instead of SSMS SMO
                 await InitializeVsSqlServices();
 
