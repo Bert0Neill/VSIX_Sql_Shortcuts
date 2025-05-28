@@ -50,6 +50,7 @@
 
 //using EnvDTE;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Data.Services;
@@ -57,6 +58,7 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using SQL_Shortcuts.Resources;
 using System;
@@ -72,6 +74,8 @@ using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
 using Task = System.Threading.Tasks.Task;
 
+
+
 namespace VSIX_Demo
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
@@ -84,16 +88,16 @@ namespace VSIX_Demo
     {
         // class variables
         public const string PackageGuidString = "4607758b-acdd-4838-adb8-1dc2cfa69b00";
-        private DTE _dte;
+        private DTE2 _dte;
         private IVsTextViewFilter _textViewFilter;
         private IVsStatusbar _statusBar;
         private string _filePath = string.Empty;
         private FileService _fileService;
 
-        // Visual Studio SQL Server Object Explorer and Data Services
-        private IVsDataExplorerConnectionManager _connectionManager;
-        private IVsDataExplorerService _dataExplorerService;
-        private IVsObjectSearch _objectSearch;
+        //// Visual Studio SQL Server Object Explorer and Data Services
+        //private IVsDataExplorerConnectionManager _connectionManager;
+        //private IVsDataExplorerService _dataExplorerService;
+        //private IVsObjectSearch _objectSearch;
 
 
         // Event handling for SQL Server connections and schema changes
@@ -111,7 +115,20 @@ namespace VSIX_Demo
                 // Initialize Visual Studio SQL services instead of SSMS SMO
                 await InitializeVsSqlServices();
 
-                BindVsDataExplorerEvents(); // bind to VS Data Explorer events instead of SMO
+                _dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+
+
+
+                _dte.Events.DocumentEvents.DocumentOpened += (doc) =>
+                {
+                    if (doc.Name.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+                    {
+                        HookIntoSqlEditor();
+                    }
+                };
+
+
+                // BindVsDataExplorerEvents(); // bind to VS Data Explorer events instead of SMO
 
                 // initialise logger
                 string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
@@ -139,20 +156,20 @@ namespace VSIX_Demo
         {
             try
             {
-                // Get Visual Studio Data Services
-                _dataExplorerService = await GetServiceAsync(typeof(IVsDataExplorerService)) as IVsDataExplorerService;
-                _connectionManager = await GetServiceAsync(typeof(IVsDataExplorerConnectionManager)) as IVsDataExplorerConnectionManager;
-                _objectSearch = await GetServiceAsync(typeof(SVsObjectSearch)) as IVsObjectSearch;
+                //// Get Visual Studio Data Services
+                //_dataExplorerService = await GetServiceAsync(typeof(IVsDataExplorerService)) as IVsDataExplorerService;
+                //_connectionManager = await GetServiceAsync(typeof(IVsDataExplorerConnectionManager)) as IVsDataExplorerConnectionManager;
+                //_objectSearch = await GetServiceAsync(typeof(SVsObjectSearch)) as IVsObjectSearch;
 
-                if (_dataExplorerService == null)
-                {
-                    SimpleLogger.Info("Visual Studio Data Explorer Service not available");
-                }
+                //if (_dataExplorerService == null)
+                //{
+                //    SimpleLogger.Info("Visual Studio Data Explorer Service not available");
+                //}
 
-                if (_connectionManager == null)
-                {
-                    SimpleLogger.Info("Visual Studio Data Connection Manager not available");
-                }
+                //if (_connectionManager == null)
+                //{
+                //    SimpleLogger.Info("Visual Studio Data Connection Manager not available");
+                //}
             }
             catch (Exception ex)
             {
@@ -164,18 +181,18 @@ namespace VSIX_Demo
         {
             try
             {
-                if (_connectionManager != null)
-                {
-                    // Subscribe to connection events in Visual Studio Data Explorer
-                    // This replaces the SSMS SMO object explorer events
-                    SimpleLogger.Info("Binding to Visual Studio Data Explorer events");
-                    // Note: Actual event binding would depend on available VS Data Services APIs
-                    // This is a conceptual replacement for the SSMS-specific SMO events
-                }
-                else
-                {
-                    SimpleLogger.Info("Data Connection Manager not available - some features may be limited");
-                }
+                //if (_connectionManager != null)
+                //{
+                //    // Subscribe to connection events in Visual Studio Data Explorer
+                //    // This replaces the SSMS SMO object explorer events
+                //    SimpleLogger.Info("Binding to Visual Studio Data Explorer events");
+                //    // Note: Actual event binding would depend on available VS Data Services APIs
+                //    // This is a conceptual replacement for the SSMS-specific SMO events
+                //}
+                //else
+                //{
+                //    SimpleLogger.Info("Data Connection Manager not available - some features may be limited");
+                //}
             }
             catch (Exception ex)
             {
@@ -187,58 +204,58 @@ namespace VSIX_Demo
         {
             try
             {
-                _dte = await GetServiceAsync(typeof(DTE)) as DTE;
-                if (_dte == null)
-                {
-                    Debug.WriteLine("Could not get DTE service");
-                    return;
-                }
+                //_dte = await GetServiceAsync(typeof(DTE)) as DTE;
+                //if (_dte == null)
+                //{
+                //    Debug.WriteLine("Could not get DTE service");
+                //    return;
+                //}
 
-                var textManager = await GetServiceAsync(typeof(SVsTextManager)) as IVsTextManager;
-                if (textManager == null)
-                {
-                    Debug.WriteLine("Could not get Text Manager service");
-                    return;
-                }
+                //var textManager = await GetServiceAsync(typeof(SVsTextManager)) as IVsTextManager;
+                //if (textManager == null)
+                //{
+                //    Debug.WriteLine("Could not get Text Manager service");
+                //    return;
+                //}
 
-                var componentModel = await GetServiceAsync(typeof(SComponentModel)) as IComponentModel;
-                if (componentModel == null)
-                {
-                    Debug.WriteLine("Could not get Component Model service");
-                    return;
-                }
+                //var componentModel = await GetServiceAsync(typeof(SComponentModel)) as IComponentModel;
+                //if (componentModel == null)
+                //{
+                //    Debug.WriteLine("Could not get Component Model service");
+                //    return;
+                //}
 
-                var editorFactory = componentModel.GetService<IVsEditorAdaptersFactoryService>();
-                if (editorFactory == null)
-                {
-                    Debug.WriteLine("Could not get Editor Adapters Factory service");
-                    return;
-                }
+                //var editorFactory = componentModel.GetService<IVsEditorAdaptersFactoryService>();
+                //if (editorFactory == null)
+                //{
+                //    Debug.WriteLine("Could not get Editor Adapters Factory service");
+                //    return;
+                //}
 
-                // Monitor documents
-                var runningDocumentTable = new RunningDocumentTable(this);
+                //// Monitor documents
+                //var runningDocumentTable = new RunningDocumentTable(this);
 
-                // Monitor window activation
-                var events = _dte.Events;
-                if (events != null)
-                {
-                    var windowEvents = events.WindowEvents;
-                    if (windowEvents != null)
-                    {
-                        windowEvents.WindowActivated += OnWindowActivated;
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Could not access DTE Events");
-                }
+                //// Monitor window activation
+                //var events = _dte.Events;
+                //if (events != null)
+                //{
+                //    var windowEvents = events.WindowEvents;
+                //    if (windowEvents != null)
+                //    {
+                //        windowEvents.WindowActivated += OnWindowActivated;
+                //    }
+                //}
+                //else
+                //{
+                //    Debug.WriteLine("Could not access DTE Events");
+                //}
 
-                // Check if there's an active window already and hook into it
-                if (_dte.ActiveWindow != null && _dte.ActiveWindow.Document != null)
-                {
-                    Debug.WriteLine("Processing already active window");
-                    OnWindowActivated(_dte.ActiveWindow, null);
-                }
+                //// Check if there's an active window already and hook into it
+                //if (_dte.ActiveWindow != null && _dte.ActiveWindow.Document != null)
+                //{
+                //    Debug.WriteLine("Processing already active window");
+                //    OnWindowActivated(_dte.ActiveWindow, null);
+                //}
             }
             catch (Exception ex)
             {
@@ -385,13 +402,13 @@ namespace VSIX_Demo
         {
             try
             {
-                if (_connectionManager != null)
-                {
-                    // This would return available SQL Server connections from VS Server Explorer
-                    // Implementation would depend on the specific VS Data Services APIs
-                    SimpleLogger.Info("Retrieving available SQL Server connections from Visual Studio");
-                    return new List<string>(); // Placeholder - actual implementation needed
-                }
+                //if (_connectionManager != null)
+                //{
+                //    // This would return available SQL Server connections from VS Server Explorer
+                //    // Implementation would depend on the specific VS Data Services APIs
+                //    SimpleLogger.Info("Retrieving available SQL Server connections from Visual Studio");
+                //    return new List<string>(); // Placeholder - actual implementation needed
+                //}
                 return Enumerable.Empty<string>();
             }
             catch (Exception ex)
@@ -406,13 +423,13 @@ namespace VSIX_Demo
         {
             try
             {
-                if (_dataExplorerService != null)
-                {
-                    // This would retrieve database objects (tables, views, etc.) from VS Server Explorer
-                    // Implementation would depend on the specific VS Data Services APIs
-                    SimpleLogger.Info($"Retrieving {objectType} objects from Visual Studio Server Explorer");
-                    return new List<string>(); // Placeholder - actual implementation needed
-                }
+                //if (_dataExplorerService != null)
+                //{
+                //    // This would retrieve database objects (tables, views, etc.) from VS Server Explorer
+                //    // Implementation would depend on the specific VS Data Services APIs
+                //    SimpleLogger.Info($"Retrieving {objectType} objects from Visual Studio Server Explorer");
+                //    return new List<string>(); // Placeholder - actual implementation needed
+                //}
                 return Enumerable.Empty<string>();
             }
             catch (Exception ex)
@@ -428,10 +445,10 @@ namespace VSIX_Demo
             {
                 if (disposing)
                 {
-                    // Clean up Visual Studio service references
-                    _connectionManager = null;
-                    _dataExplorerService = null;
-                    _objectSearch = null;
+                    //// Clean up Visual Studio service references
+                    //_connectionManager = null;
+                    //_dataExplorerService = null;
+                    //_objectSearch = null;
 
                     _sqlShortcuts?.Clear();
                     _sqlShortcuts = null;
@@ -457,6 +474,32 @@ namespace VSIX_Demo
                 SimpleLogger.Info($"Unexpected error in Dispose: {ex.Message}");
             }
         }
+
+        public void HookIntoSqlEditor()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var dte = Package.GetGlobalService(typeof(SDTE)) as EnvDTE80.DTE2;
+            var activeDoc = dte?.ActiveDocument;
+            if (activeDoc == null || !activeDoc.Name.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            var textMgr = (IVsTextManager)ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager));
+            IVsTextView textView;
+            textMgr.GetActiveView(1, null, out textView);
+
+            var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
+            var editorAdapter = componentModel.GetService<IVsEditorAdaptersFactoryService>();
+            IWpfTextView wpfTextView = editorAdapter.GetWpfTextView(textView);
+
+            if (wpfTextView == null) return;
+
+            wpfTextView.VisualElement.PreviewKeyDown += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Key Pressed: {e.Key}");
+            };
+        }
+
     }
 }
 

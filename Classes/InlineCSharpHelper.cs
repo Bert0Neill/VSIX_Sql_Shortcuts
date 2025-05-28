@@ -105,16 +105,16 @@ namespace VSIX_AutoComplete_SSMS.Classes
 
                 var evaluatedExpression = EvaluateInlineCSharp(sqlShortcut.SqlComplete);
 
-                // was there a table\view node selected
-                if (!string.IsNullOrWhiteSpace(VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode))
-                {
-                    evaluatedExpression = Regex.Replace(
-                        evaluatedExpression,
-                        "<table>",
-                        VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode,
-                        RegexOptions.IgnoreCase
-                    );
-                }
+                //// was there a table\view node selected
+                //if (!string.IsNullOrWhiteSpace(VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode))
+                //{
+                //    evaluatedExpression = Regex.Replace(
+                //        evaluatedExpression,
+                //        "<table>",
+                //        VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode,
+                //        RegexOptions.IgnoreCase
+                //    );
+                //}
 
                 MessageBoxAdv.Show(evaluatedExpression, Resource.Grid_Eval_Header, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

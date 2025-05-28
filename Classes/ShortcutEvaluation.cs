@@ -83,15 +83,15 @@ namespace VSIX_AutoComplete_SSMS.Classes
                                         {
                                             string evaluatedQuery = _inlineCSharpHelper.EvaluateInlineCSharp(sqlShortcut.SqlComplete) + " ";
 
-                                            if (!string.IsNullOrWhiteSpace(VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode))
-                                            {
-                                                evaluatedQuery = Regex.Replace(
-                                                    evaluatedQuery,
-                                                    Table_TAG,
-                                                    VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode,
-                                                    RegexOptions.IgnoreCase
-                                                );
-                                            }
+                                            //if (!string.IsNullOrWhiteSpace(VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode))
+                                            //{
+                                            //    evaluatedQuery = Regex.Replace(
+                                            //        evaluatedQuery,
+                                            //        Table_TAG,
+                                            //        VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode,
+                                            //        RegexOptions.IgnoreCase
+                                            //    );
+                                            //}
 
                                             edit.Replace(spanToReplace, evaluatedQuery);
                                             edit.Apply();
