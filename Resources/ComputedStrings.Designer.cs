@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SQL_Shortcuts.Resources {
+namespace SQL_Shortcuts_SSMS21Plus.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SQL_Shortcuts.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SQL_Shortcuts.Resources.ComputedStrings", typeof(ComputedStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SQL_Shortcuts_SSMS21Plus.Resources.ComputedStrings", typeof(ComputedStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

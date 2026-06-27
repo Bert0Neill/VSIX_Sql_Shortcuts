@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
 using Action = System.Action;
-using SQL_Shortcuts.Resources;
+using SQL_Shortcuts_SSMS21Plus.Resources;
 using VSIX_Demo;
 
 namespace VSIX_AutoComplete_SSMS.Forms

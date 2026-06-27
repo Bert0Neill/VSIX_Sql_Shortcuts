@@ -112,7 +112,7 @@
             this.btnSpltDates.ShowDropDownOnButtonClick = false;
             this.btnSpltDates.Size = new System.Drawing.Size(212, 42);
             this.btnSpltDates.TabIndex = 7;
-            this.btnSpltDates.Text = global::SQL_Shortcuts.Resources.Resource.Button_Insert_Date_Expression;
+            this.btnSpltDates.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Insert_Date_Expression;
             this.tlTipExpression.SetToolTip(this.btnSpltDates, "Expression will be evaluated when rendered");
             this.btnSpltDates.DropDowItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.btnSpltDates_DropDowItemClicked);
             // 
@@ -239,11 +239,11 @@
             this.lblSqlShortcut.Name = "lblSqlShortcut";
             this.lblSqlShortcut.Size = new System.Drawing.Size(81, 16);
             this.lblSqlShortcut.TabIndex = 0;
-            this.lblSqlShortcut.Text = global::SQL_Shortcuts.Resources.Resource.Label_Sql_Shortcut;
+            this.lblSqlShortcut.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Label_Sql_Shortcut;
             // 
             // txtSqlShortcut
             // 
-            bannerTextInfo3.Text = global::SQL_Shortcuts.Resources.Resource.Banner_Maxlength_10;
+            bannerTextInfo3.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Banner_Maxlength_10;
             bannerTextInfo3.Visible = true;
             this.bnrTxtPrvShortcut.SetBannerText(this.txtSqlShortcut, bannerTextInfo3);
             this.txtSqlShortcut.BeforeTouchSize = new System.Drawing.Size(635, 217);
@@ -265,7 +265,7 @@
             this.lblSqlComplete.Name = "lblSqlComplete";
             this.lblSqlComplete.Size = new System.Drawing.Size(93, 16);
             this.lblSqlComplete.TabIndex = 2;
-            this.lblSqlComplete.Text = global::SQL_Shortcuts.Resources.Resource.Label_Sql_Statement;
+            this.lblSqlComplete.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Label_Sql_Statement;
             // 
             // txtSqlComplete
             // 
@@ -303,7 +303,7 @@
             this.btnInsTable.Name = "btnInsTable";
             this.btnInsTable.Size = new System.Drawing.Size(212, 42);
             this.btnInsTable.TabIndex = 6;
-            this.btnInsTable.Text = global::SQL_Shortcuts.Resources.Resource.Button_Insert_Table_Tag;
+            this.btnInsTable.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Insert_Table_Tag;
             this.tlTipExpression.SetToolTip(this.btnInsTable, "<Table> will be replaced by selected table\\view");
             this.btnInsTable.UseVisualStyleBackColor = true;
             this.btnInsTable.Click += new System.EventHandler(this.btnInsTable_Click);
@@ -338,7 +338,7 @@
             this.btnTestSqlStatement.Name = "btnTestSqlStatement";
             this.btnTestSqlStatement.Size = new System.Drawing.Size(137, 42);
             this.btnTestSqlStatement.TabIndex = 9;
-            this.btnTestSqlStatement.Text = global::SQL_Shortcuts.Resources.Resource.Button_Test_Sql;
+            this.btnTestSqlStatement.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Test_Sql;
             this.btnTestSqlStatement.UseVisualStyleBackColor = true;
             this.btnTestSqlStatement.Click += new System.EventHandler(this.btnTestSqlStatement_Click);
             // 
@@ -352,7 +352,7 @@
             this.btnSaveSqlStatement.Name = "btnSaveSqlStatement";
             this.btnSaveSqlStatement.Size = new System.Drawing.Size(124, 42);
             this.btnSaveSqlStatement.TabIndex = 10;
-            this.btnSaveSqlStatement.Text = global::SQL_Shortcuts.Resources.Resource.Button_Save;
+            this.btnSaveSqlStatement.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Save;
             this.btnSaveSqlStatement.UseVisualStyleBackColor = true;
             this.btnSaveSqlStatement.Click += new System.EventHandler(this.btnSaveSqlStatement_Click);
             // 

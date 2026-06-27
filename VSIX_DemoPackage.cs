@@ -53,14 +53,13 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
-using SQL_Shortcuts.Resources;
+using SQL_Shortcuts_SSMS21Plus.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,7 +68,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
 using Task = System.Threading.Tasks.Task;
@@ -131,7 +129,7 @@ namespace VSIX_Demo
                 // BindVsDataExplorerEvents(); // bind to VS Data Explorer events instead of SMO
 
                 // initialise logger
-                string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
+                string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
                 SimpleLogger.Info(Resource.Package_Initializing);
 
                 LoadSqlShortcuts(); // load any existing shortcuts
@@ -276,7 +274,7 @@ namespace VSIX_Demo
         {
             try
             {
-                string FOLDER_FILENAME = SQL_Shortcuts.Properties.Settings.Default.ConfigFile;
+                string FOLDER_FILENAME = SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.ConfigFile;
                 _fileService = new FileService();
                 _filePath = Path.Combine(Directory.GetCurrentDirectory(), FOLDER_FILENAME);
 

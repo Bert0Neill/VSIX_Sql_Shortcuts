@@ -90,7 +90,7 @@ namespace VSIX_AutoComplete_SSMS.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            SyncfusionLicenseProvider.RegisterLicense(SQL_Shortcuts.Properties.Settings.Default.SyncfusionKey);
+            SyncfusionLicenseProvider.RegisterLicense(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.SyncfusionKey);
             frmShortcuts frmShortcut = new frmShortcuts();
             frmShortcut.ShowDialog();
         }

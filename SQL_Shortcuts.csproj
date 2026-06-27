@@ -34,8 +34,8 @@
     <ProjectGuid>{10A31ECA-B417-404E-AD06-41BC95A1C0E7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQL_Shortcuts</RootNamespace>
-    <AssemblyName>SQL_Shortcuts</AssemblyName>
+    <RootNamespace>SQL_Shortcuts_SSMS21Plus</RootNamespace>
+    <AssemblyName>SQL_Shortcuts_SSMS21Plus</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <UseCodebase>true</UseCodebase>
@@ -57,7 +57,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
-    <CopyVsixExtensionLocation>D:\Program Files %28x86%29\Microsoft SQL Server Management Studio 20\Common7\IDE\Extensions\SqlShortcuts</CopyVsixExtensionLocation>
+    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Extensions\SqlShortcuts21Plus</CopyVsixExtensionLocation>
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

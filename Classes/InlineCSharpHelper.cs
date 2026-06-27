@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using VSIX_AutoComplete_SSMS.Models;
 using VSIX_Demo;
-using SQL_Shortcuts.Resources;
+using SQL_Shortcuts_SSMS21Plus.Resources;
 
 namespace VSIX_AutoComplete_SSMS.Classes
 {

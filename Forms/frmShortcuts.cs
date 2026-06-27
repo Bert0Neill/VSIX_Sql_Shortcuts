@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
-using SQL_Shortcuts.Resources;
+using SQL_Shortcuts_SSMS21Plus.Resources;
 using VSIX_Demo;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
@@ -38,7 +38,7 @@ namespace VSIX_AutoComplete_SSMS.Forms
 
                 InitializeComponent();
 
-                string filename = SQL_Shortcuts.Properties.Settings.Default.ConfigFile;
+                string filename = SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.ConfigFile;
                 _inlineCSharpHelper = new InlineCSharpHelper();
 
                 SimpleLogger.Info(Resource.Grid_Loading_Form);
@@ -256,7 +256,7 @@ namespace VSIX_AutoComplete_SSMS.Forms
                         saveDialog.Filter = "Pdf Files (*.pdf)|*.pdf";
                         saveDialog.DefaultExt = "pdf";
                         saveDialog.AddExtension = true;
-                        saveDialog.FileName = SQL_Shortcuts.Properties.Settings.Default.ExportFilename;
+                        saveDialog.FileName = SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.ExportFilename;
 
                         if (saveDialog.ShowDialog() == DialogResult.OK)
                         {

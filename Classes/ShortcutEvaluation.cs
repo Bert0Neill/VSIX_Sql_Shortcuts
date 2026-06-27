@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Text;
 using VSIX_AutoComplete_SSMS.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SQL_Shortcuts.Resources;
+using SQL_Shortcuts_SSMS21Plus.Resources;
 
 namespace VSIX_AutoComplete_SSMS.Classes
 {
