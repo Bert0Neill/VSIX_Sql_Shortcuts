@@ -60,15 +60,6 @@ namespace SQL_Shortcuts.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("VSIX_AutoComplete_SSMS.Resources.Resource")]
-        public string LocalisationResourcePath {
-            get {
-                return ((string)(this["LocalisationResourcePath"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("SQL_Shortcuts.pdf")]

@@ -14,9 +14,6 @@
     <Setting Name="ShortcutIndicator" Type="System.String" Scope="Application">
       <Value Profile="(Default)">`</Value>
     </Setting>
-    <Setting Name="LocalisationResourcePath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">VSIX_AutoComplete_SSMS.Resources.Resource</Value>
-    </Setting>
     <Setting Name="ExportFilename" Type="System.String" Scope="User">
       <Value Profile="(Default)">SQL_Shortcuts.pdf</Value>
     </Setting>
