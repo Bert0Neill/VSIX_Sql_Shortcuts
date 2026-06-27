@@ -11,7 +11,7 @@
 		<Tags>SSMS, Sql Autocomplete, SQL Complete, Extension</Tags>
 	</Metadata>
 	<Installation>
-		<InstallationTarget Id="Microsoft.SqlServer.Management.SqlStudio" Version="[18.0,)">
+		<InstallationTarget Id="Microsoft.VisualStudio.Ssms" Version="[21.0,)">
 			<ProductArchitecture>amd64</ProductArchitecture>
 		</InstallationTarget>
 	</Installation>

@@ -4,12 +4,6 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Shortcuts", "SQL_Shortcuts.csproj", "{10A31ECA-B417-404E-AD06-41BC95A1C0E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudioVersions", "VisualStudioVersions", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VSIX", "VSIX", "{76AD957D-CB32-4E1C-A581-97CA941C225E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIX_SqlShortcuts", "..\VSIX_SqlShortcuts\VSIX_SqlShortcuts.csproj", "{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,16 +14,9 @@ Global
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{761610EC-1DE8-4E8C-9180-5FCBFA2C90A2} = {76AD957D-CB32-4E1C-A581-97CA941C225E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C869932-CA5B-4AF3-9DF0-0E30061E5952}
