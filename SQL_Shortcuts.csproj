@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
@@ -45,8 +45,9 @@
     <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
     <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
     <StartAction>Program</StartAction>
-    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix Exp</StartArguments>
+    <SsmsInstallPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\</SsmsInstallPath>
+    <StartProgram>$(SsmsInstallPath)Common7\IDE\Ssms.exe</StartProgram>
+    <SyncfusionPath>C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\25.1.35</SyncfusionPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,8 +57,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
-    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Extensions\SqlShortcuts21Plus</CopyVsixExtensionLocation>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -265,70 +267,73 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Syncfusion.Core.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\Assemblies\4.6\Syncfusion.Core.WinForms.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Core.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Core.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Data.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Data.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Data.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Grid.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Grid.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Grid.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Grid.Windows, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Grid.Windows, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Grid.Windows.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.GridCommon.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.GridCommon.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.GridCommon.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\Assemblies\4.6\Syncfusion.Licensing.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Licensing, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Licensing.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Pdf.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\precompiledassemblies\4.0\Syncfusion.Pdf.Base.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Pdf.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\precompiledassemblies\4.6.2\Syncfusion.Pdf.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfDataGrid.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.SfDataGrid.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.SfDataGrid.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfDataGridConverter.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\precompiledassemblies\4.0\Syncfusion.SfDataGridConverter.WinForms.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.SfDataGridConverter.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\precompiledassemblies\4.6.2\Syncfusion.SfDataGridConverter.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfInput.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.SfInput.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.SfInput.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.SfListView.WinForms, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.SfListView.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.SfListView.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Shared.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\Assemblies\4.6\Syncfusion.Shared.Base.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Shared.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Shared.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Shared.Windows, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\Assemblies\4.6\Syncfusion.Shared.Windows.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Shared.Windows, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Shared.Windows.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.SpellChecker.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.SpellChecker.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.SpellChecker.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Tools.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Tools.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Tools.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Tools.Windows, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Syncfusion.Tools.Windows, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Tools.Windows.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.XlsIO.Base, Version=23.1460.36.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\Windows\23.1.36\Assemblies\4.6\Syncfusion.XlsIO.Base.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Syncfusion.XlsIO.Base, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.XlsIO.Base.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -364,11 +369,8 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
       <Version>7.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK">
-      <Version>15.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0">
-      <Version>15.0.26606</Version>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.10.40279">
+      <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.10.2185" />
     <PackageReference Include="System.Threading.Channels">

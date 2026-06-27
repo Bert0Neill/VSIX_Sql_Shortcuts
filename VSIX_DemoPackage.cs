@@ -1,4 +1,4 @@
-﻿// ==============================================
+// ==============================================
 // VSIX_DemoPackage Class
 //
 // Description:
@@ -115,22 +115,12 @@ namespace VSIX_Demo
 
                 _dte = await GetServiceAsync(typeof(DTE)) as DTE2;
 
-
-
-                _dte.Events.DocumentEvents.DocumentOpened += (doc) =>
-                {
-                    if (doc.Name.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
-                    {
-                        HookIntoSqlEditor();
-                    }
-                };
-
-
-                // BindVsDataExplorerEvents(); // bind to VS Data Explorer events instead of SMO
-
-                // initialise logger
+                // initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
                 string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
                 SimpleLogger.Info(Resource.Package_Initializing);
+
+                // SSMS 22 uses EnvDTE 18; avoid DTE event handlers compiled against EnvDTE 8.
+                // SQL editor hooks are applied when the shortcuts UI opens instead.
 
                 LoadSqlShortcuts(); // load any existing shortcuts
                 await LoadVsStatusBarReference(); // allow ext to update VS statusbar
@@ -306,6 +296,14 @@ namespace VSIX_Demo
             }
         }
 
+        private void OnDocumentOpened(EnvDTE.Document doc)
+        {
+            if (doc?.Name != null && doc.Name.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+            {
+                HookIntoSqlEditor();
+            }
+        }
+
         private void OnWindowActivated(EnvDTE.Window gotFocus, EnvDTE.Window lostFocus)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -454,18 +452,12 @@ namespace VSIX_Demo
 
                     if (_textViewFilter is IDisposable disposableFilter)
                         disposableFilter.Dispose();
-
-                    var windowEvents = _dte?.Events?.WindowEvents;
-                    if (windowEvents != null)
-                    {
-                        windowEvents.WindowActivated -= OnWindowActivated;
-                    }
                 }
                 base.Dispose(disposing);
             }
             catch (InvalidCastException ex)
             {
-                SimpleLogger.Info($"Unable to access WindowEvents during disposal: {ex.Message}");
+                SimpleLogger.Info($"Unable to access DTE during disposal: {ex.Message}");
             }
             catch (Exception ex)
             {

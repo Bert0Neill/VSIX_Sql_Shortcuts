@@ -107,7 +107,6 @@
             this.btnSpltDates.Margin = new System.Windows.Forms.Padding(4);
             this.btnSpltDates.MinimumSize = new System.Drawing.Size(100, 28);
             this.btnSpltDates.Name = "btnSpltDates";
-            splitButtonRenderer3.SplitButton = this.btnSpltDates;
             this.btnSpltDates.Renderer = splitButtonRenderer3;
             this.btnSpltDates.ShowDropDownOnButtonClick = false;
             this.btnSpltDates.Size = new System.Drawing.Size(212, 42);
