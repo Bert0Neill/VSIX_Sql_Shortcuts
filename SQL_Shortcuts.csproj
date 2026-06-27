@@ -119,7 +119,6 @@
     <None Include="app.config" />
     <None Include="Config\sqlShortcuts.json" />
     <None Include="Misc\SSMS VSIX.one" />
-    <None Include="Misc\User Guide\SQL Shortcuts - Installation &amp; User Guide.docx" />
     <None Include="Misc\User Guide\User Guide - SQL Shortcuts SSMS Extension.docx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
