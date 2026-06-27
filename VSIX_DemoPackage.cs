@@ -68,8 +68,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
+using VSIX_Demo.Core;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -80,8 +82,10 @@ namespace VSIX_Demo
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuidString)]
-    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+    //[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    //[ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+
+    [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class VSIX_DemoPackage : AsyncPackage
     {
         // class variables
@@ -104,35 +108,42 @@ namespace VSIX_Demo
         public static BindingList<SqlShortcuts> _sqlShortcuts = new BindingList<SqlShortcuts>(); // store shortcuts in memory
         public static bool IsDemo = true;
 
+
+        private SqlEditorHookService _hookService = new SqlEditorHookService();
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             try
             {
+                System.Diagnostics.Debugger.Launch(); // MUST pop a prompt
 
-                // Initialize Visual Studio SQL services instead of SSMS SMO
-                await InitializeVsSqlServices();
+                await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-                _dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+                System.Diagnostics.Debug.WriteLine("PACKAGE LOADED");
 
-                // initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
-                string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
-                SimpleLogger.Info(Resource.Package_Initializing);
+                //// Initialize Visual Studio SQL services instead of SSMS SMO
+                //await InitializeVsSqlServices();
 
-                // SSMS 22 uses EnvDTE 18; avoid DTE event handlers compiled against EnvDTE 8.
-                // SQL editor hooks are applied when the shortcuts UI opens instead.
+                //_dte = await GetServiceAsync(typeof(DTE)) as DTE2;
 
-                LoadSqlShortcuts(); // load any existing shortcuts
-                await LoadVsStatusBarReference(); // allow ext to update VS statusbar
-                await MonitorEditorWindow(); // capture events when user types into SQL editor
-                await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
+                //// initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
+                //string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
+                //SimpleLogger.Info(Resource.Package_Initializing);
 
-                string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-                if (IsDemo)
-                {
-                    message = "(Demo Version) - " + message;
-                }
-                StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
+                //// SSMS 22 uses EnvDTE 18; avoid DTE event handlers compiled against EnvDTE 8.
+                //// SQL editor hooks are applied when the shortcuts UI opens instead.
+
+                //LoadSqlShortcuts(); // load any existing shortcuts
+                //await LoadVsStatusBarReference(); // allow ext to update VS statusbar
+                //await MonitorEditorWindow(); // capture events when user types into SQL editor
+                //await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
+
+                //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
+                //if (IsDemo)
+                //{
+                //    message = "(Demo Version) - " + message;
+                //}
+                //StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
             }
             catch (Exception ex)
             {
@@ -244,6 +255,34 @@ namespace VSIX_Demo
                 //    Debug.WriteLine("Processing already active window");
                 //    OnWindowActivated(_dte.ActiveWindow, null);
                 //}
+
+                _dte.Events.WindowEvents.WindowActivated += (gotFocus, lostFocus) =>
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+
+                    try
+                    {
+                        if (gotFocus?.Document == null)
+                            return;
+
+                        if (!gotFocus.Document.FullName.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+                            return;
+
+                        var textManager = ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager)) as IVsTextManager;
+                        if (textManager == null)
+                            return;
+
+                        if (ErrorHandler.Failed(textManager.GetActiveView(1, null, out IVsTextView view)))
+                            return;
+
+                        // 🔥 THIS is now the ONLY hook point you need
+                        _hookService.Hook(view);
+                    }
+                    catch (Exception ex)
+                    {
+                        SimpleLogger.Error(ex.Message);
+                    }
+                };
             }
             catch (Exception ex)
             {
