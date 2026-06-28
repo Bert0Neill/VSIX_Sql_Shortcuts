@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_22", "SQL Ve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_Interfaces", "SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj", "{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_21", "SQL Versions\SSMS_21_SqlAdjust\SSMS_SqlAdjust_21.csproj", "{CF35B71A-8441-48D9-92A5-DFBED33AAB65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF35B71A-8441-48D9-92A5-DFBED33AAB65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF35B71A-8441-48D9-92A5-DFBED33AAB65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF35B71A-8441-48D9-92A5-DFBED33AAB65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF35B71A-8441-48D9-92A5-DFBED33AAB65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,6 +41,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D683B503-995F-463B-B75E-2C83CAA30DFF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{64B5FBBB-A832-46BA-BB61-BDFAF4A15286} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CF35B71A-8441-48D9-92A5-DFBED33AAB65} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C869932-CA5B-4AF3-9DF0-0E30061E5952}

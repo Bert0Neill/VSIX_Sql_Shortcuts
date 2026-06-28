@@ -46,6 +46,7 @@
 // ==============================================
 
 extern alias ssms22;
+// extern alias ssms21;
 
 using EnvDTE;
 using EnvDTE80;
