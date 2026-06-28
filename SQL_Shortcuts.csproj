@@ -62,7 +62,7 @@
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
-    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Extensions\Sql_Shortcuts_21Plus</CopyVsixExtensionLocation>
+    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Extensions\Sql_Shortcuts_21Plus</CopyVsixExtensionLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -98,9 +98,6 @@
     <Compile Include="Models\MenuObjects\MenuItem.cs" />
     <Compile Include="Models\MenuObjects\MenuItemInstance.cs" />
     <Compile Include="Models\MenuObjects\NodeInfo.cs" />
-    <Compile Include="Models\OptionsDialogPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Models\RecordReference.cs" />
     <Compile Include="Models\SmoNodeInfo.cs" />
     <Compile Include="Models\SqlShortcuts.cs" />
