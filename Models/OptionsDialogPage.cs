@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 
 namespace VSIX_SqlShortcuts.Models

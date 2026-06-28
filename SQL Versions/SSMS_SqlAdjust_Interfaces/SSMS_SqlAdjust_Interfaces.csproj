@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SSMS_SqlAdjust_Interfaces</RootNamespace>
     <AssemblyName>SSMS_SqlAdjust_Interfaces</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SqlWorkbench.Interfaces">
-      <HintPath>..\..\VSIX\Misc\22\SqlWorkbench.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

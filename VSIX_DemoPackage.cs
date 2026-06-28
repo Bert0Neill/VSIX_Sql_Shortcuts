@@ -26,6 +26,7 @@ using System.Threading;
 using System.Windows.Forms;
 using VSIX_SqlShortcuts.Classes;
 using VSIX_SqlShortcuts.Models;
+using VSIX_SqlShortcuts.Models.MenuObjects;
 using Task = System.Threading.Tasks.Task;
 
 namespace VSIX_SqlShortcuts

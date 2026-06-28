@@ -45,7 +45,7 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Extensions\Application\Microsoft.SqlServer.Management.SqlStudio.Explorer.dll</HintPath>
     </Reference>
     <Reference Include="SqlWorkbench.Interfaces">
-      <HintPath>..\..\VSIX\Misc\22\SqlWorkbench.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,13 +62,13 @@
     <Compile Include="SmoObjectExplorer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
-      <Project>{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}</Project>
-      <Name>SSMS_SqlAdjust_Interfaces</Name>
-    </ProjectReference>
+    <None Include="SqlShortcuts.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SqlShortcuts.snk" />
+    <ProjectReference Include="..\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
+      <Project>{64b5fbbb-a832-46ba-bb61-bdfaf4a15286}</Project>
+      <Name>SSMS_SqlAdjust_Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

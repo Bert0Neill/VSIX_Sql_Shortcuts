@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Xml.Serialization;
+using VSIX_SqlShortcuts.Models.MenuObjects;
 
 namespace VSIX_SqlShortcuts.Models
 {

@@ -1,4 +1,4 @@
-﻿namespace VSIX_SqlShortcuts.Models
+﻿namespace VSIX_SqlShortcuts.Models.MenuObjects
 {
 	public class MenuItemInstance
 	{

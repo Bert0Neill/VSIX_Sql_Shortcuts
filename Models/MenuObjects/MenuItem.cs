@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
 
-namespace VSIX_SqlShortcuts.Models
+namespace VSIX_SqlShortcuts.Models.MenuObjects
 {
 
 	public class MenuItem
