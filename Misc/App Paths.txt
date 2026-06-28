@@ -25,3 +25,7 @@ C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Sql
 %LOCALAPPDATA%\Microsoft\VisualStudio\17.0_*\Cache
 %LOCALAPPDATA%\Microsoft\VisualStudio\17.0_*\Exp\
 %LOCALAPPDATA%\Microsoft\VisualStudio\
+
+C:\Users\Developer\AppData\Local\Microsoft\SSMS\22.0_e4abd3f9
+C:\Users\Developer\AppData\Local\Microsoft\VisualStudio\17.0_d83f76eeExp
+reset in windows menu

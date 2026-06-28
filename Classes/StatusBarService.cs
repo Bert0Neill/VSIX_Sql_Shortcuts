@@ -4,7 +4,7 @@ using System;
 using Task = System.Threading.Tasks.Task;
 using SQL_Shortcuts_SSMS21Plus.Resources;
 
-namespace VSIX_AutoComplete_SSMS.Classes
+namespace VSIX_SqlShortcuts.Classes
 {
     public class StatusBarService
     {

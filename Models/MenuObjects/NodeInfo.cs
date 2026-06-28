@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VSIX_Demo.Models
+namespace VSIX_SqlShortcuts.Models
 {
 	public class NodeInfo
 	{

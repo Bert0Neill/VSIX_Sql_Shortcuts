@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 
-namespace VSIX_Demo.Models
+namespace VSIX_SqlShortcuts.Models
 {
 	public class OptionsDialogPage : DialogPage
 	{

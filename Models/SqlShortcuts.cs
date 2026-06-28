@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace VSIX_AutoComplete_SSMS.Models
+namespace VSIX_SqlShortcuts.Models
 {
     public class SqlShortcuts
     {

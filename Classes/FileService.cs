@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace VSIX_AutoComplete_SSMS.Classes
+namespace VSIX_SqlShortcuts.Classes
 {
     internal class FileService
     {

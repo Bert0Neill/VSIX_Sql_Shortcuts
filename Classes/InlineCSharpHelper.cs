@@ -6,11 +6,10 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using VSIX_AutoComplete_SSMS.Models;
-using VSIX_Demo;
+using VSIX_SqlShortcuts.Models;
 using SQL_Shortcuts_SSMS21Plus.Resources;
 
-namespace VSIX_AutoComplete_SSMS.Classes
+namespace VSIX_SqlShortcuts.Classes
 {
     public class InlineCSharpHelper
     {

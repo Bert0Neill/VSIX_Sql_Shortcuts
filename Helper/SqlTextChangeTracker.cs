@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Diagnostics;
 
-namespace VSIX_Demo.Helper
+namespace VSIX_SqlShortcuts.Helper
 {
     public class SqlTextChangeTracker
     {

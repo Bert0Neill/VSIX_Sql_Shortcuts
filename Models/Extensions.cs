@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace VSIX_Demo.Models
+namespace VSIX_SqlShortcuts.Models
 {
 	public static class Extensions
 	{

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Diagnostics;
 
-namespace VSIX_Demo.Helper
+namespace VSIX_SqlShortcuts.Helper
 {
     public class SqlEditorHookService
     {

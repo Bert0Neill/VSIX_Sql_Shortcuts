@@ -3,13 +3,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using VSIX_AutoComplete_SSMS.Classes;
-using VSIX_AutoComplete_SSMS.Models;
+using VSIX_SqlShortcuts.Classes;
+using VSIX_SqlShortcuts.Models;
 using Action = System.Action;
 using SQL_Shortcuts_SSMS21Plus.Resources;
-using VSIX_Demo;
+using VSIX_SqlShortcuts;
 
-namespace VSIX_AutoComplete_SSMS.Forms
+namespace VSIX_SqlShortcuts.Forms
 {
     public partial class frmCRUD : Form
     {

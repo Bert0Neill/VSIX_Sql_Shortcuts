@@ -1,4 +1,4 @@
-﻿namespace VSIX_AutoComplete_SSMS.Forms
+﻿namespace VSIX_SqlShortcuts.Forms
 {
     partial class frmShortcuts
     {

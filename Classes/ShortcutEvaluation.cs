@@ -6,14 +6,14 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
 using System;
-using VSIX_Demo;
+using VSIX_SqlShortcuts;
 using Microsoft.VisualStudio.Text;
-using VSIX_AutoComplete_SSMS.Models;
+using VSIX_SqlShortcuts.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SQL_Shortcuts_SSMS21Plus.Resources;
 
-namespace VSIX_AutoComplete_SSMS.Classes
+namespace VSIX_SqlShortcuts.Classes
 {
     internal class ShortcutEvaluation : IOleCommandTarget, IVsTextViewFilter
     {

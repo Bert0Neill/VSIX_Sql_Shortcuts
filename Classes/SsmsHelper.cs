@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.Shell.Interop;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using static System.Windows.Forms.Design.AxImporter;
 using Process = System.Diagnostics.Process;
 
-namespace VSIX_AutoComplete_SSMS.Classes
+namespace VSIX_SqlShortcuts.Classes
 {
     internal class SsmsHelper
     {

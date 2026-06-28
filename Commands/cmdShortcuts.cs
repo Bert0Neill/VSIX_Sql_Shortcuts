@@ -1,13 +1,11 @@
-﻿//using EnvDTE;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 using Syncfusion.Licensing;
 using System;
 using System.ComponentModel.Design;
-using System.Globalization;
-using VSIX_AutoComplete_SSMS.Forms;
+using VSIX_SqlShortcuts.Forms;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSIX_AutoComplete_SSMS.Commands
+namespace VSIX_SqlShortcuts.Commands
 {
     /// <summary>
     /// Command handler
