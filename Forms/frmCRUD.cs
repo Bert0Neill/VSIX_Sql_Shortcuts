@@ -55,13 +55,6 @@ namespace VSIX_SqlShortcuts.Forms
                     txtSqlComplete.Text = _selectedRecord.SqlComplete;
                 }
 
-                // if demo version limit the Sql statement to 100 characters
-                if (VSIX_DemoPackage.IsDemo)
-                {
-                    txtSqlComplete.MaxLength = 100;
-                    toolStripStatusLabelCrud.Text = Resource.Grid_Demo_Limit;
-                }
-
                 // initial button state
                 UpdateButtonState(null, null);
             }

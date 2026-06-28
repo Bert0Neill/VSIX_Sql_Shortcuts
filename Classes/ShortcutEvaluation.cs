@@ -12,6 +12,7 @@ using VSIX_SqlShortcuts.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts_SSMS21Plus.Helper;
 
 namespace VSIX_SqlShortcuts.Classes
 {
@@ -83,12 +84,13 @@ namespace VSIX_SqlShortcuts.Classes
                                         {
                                             string evaluatedQuery = _inlineCSharpHelper.EvaluateInlineCSharp(sqlShortcut.SqlComplete) + " ";
 
-                                            if (!string.IsNullOrWhiteSpace(VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode))
+                                            if (!string.IsNullOrWhiteSpace(SsmsState.Instance.SelectedTableOrView))
                                             {
                                                 evaluatedQuery = Regex.Replace(
                                                     evaluatedQuery,
                                                     Table_TAG,
-                                                    VSIX_DemoPackage._smoObjectExplorer.SelectedSmoNode,
+                                                    //VSIX_DemoPackage.SelectedSmoNode,
+                                                    SsmsState.Instance.SelectedTableOrView,
                                                     RegexOptions.IgnoreCase
                                                 );
                                             }

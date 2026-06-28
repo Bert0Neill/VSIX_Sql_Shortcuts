@@ -44,9 +44,7 @@ namespace VSIX_SqlShortcuts.Forms
                 SimpleLogger.Info(Resource.Grid_Loading_Form);
 
                 // create working copy using LINQ
-                var sourceData = VSIX_DemoPackage.IsDemo
-                    ? VSIX_DemoPackage._sqlShortcuts.Take(1)  // Only take first record in demo mode
-                    : VSIX_DemoPackage._sqlShortcuts;         // Take all records in normal mode
+                var sourceData = VSIX_DemoPackage._sqlShortcuts;         // Take all records in normal mode
 
                 _workingCopy = new BindingList<SqlShortcuts>(
                     sourceData.Select(item => new SqlShortcuts
@@ -82,11 +80,6 @@ namespace VSIX_SqlShortcuts.Forms
                 sfDataGridShortCuts.DataSource = _workingCopy;
 
                 UpdateButtonState(null, null); // Initial button state
-
-                if (!VSIX_DemoPackage.IsDemo)
-                {
-                    toolStripStatusLabel.Text = string.Format(Resource.Grid_Loaded_Shortcuts, _workingCopy.Count);
-                }
             }
             catch (Exception ex)
             {
@@ -346,13 +339,6 @@ namespace VSIX_SqlShortcuts.Forms
             {
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
 
-                if (VSIX_DemoPackage.IsDemo && _workingCopy?.Count() >= 1)
-                {
-                    // Disable the button if in demo mode and more than 1 record
-                    this.btnAdd.Enabled = false;
-                    this.toolStripStatusLabel.Text = "Demo version: Only able to create 1 SQL shortcut";
-                }
-                else
                 {
                     this.btnAdd.Enabled = true;
                     this.toolStripStatusLabel.Text = string.Empty;
