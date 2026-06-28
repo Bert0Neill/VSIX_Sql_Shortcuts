@@ -4,6 +4,10 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Shortcuts", "SQL_Shortcuts.csproj", "{10A31ECA-B417-404E-AD06-41BC95A1C0E7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestVsix", "TestVsix", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIX_Test_SSMS22", "..\VSIX_Test_SSMS22\VSIX_Test_SSMS22.csproj", "{CC95A8A7-9270-40F1-A8CE-17097CCE56E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,9 +18,16 @@ Global
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A31ECA-B417-404E-AD06-41BC95A1C0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC95A8A7-9270-40F1-A8CE-17097CCE56E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC95A8A7-9270-40F1-A8CE-17097CCE56E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC95A8A7-9270-40F1-A8CE-17097CCE56E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC95A8A7-9270-40F1-A8CE-17097CCE56E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC95A8A7-9270-40F1-A8CE-17097CCE56E2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C869932-CA5B-4AF3-9DF0-0E30061E5952}

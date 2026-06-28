@@ -68,10 +68,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
-using VSIX_Demo.Core;
+using VSIX_Demo.Helper;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -121,29 +120,29 @@ namespace VSIX_Demo
 
                 System.Diagnostics.Debug.WriteLine("PACKAGE LOADED");
 
-                //// Initialize Visual Studio SQL services instead of SSMS SMO
-                //await InitializeVsSqlServices();
+                // Initialize Visual Studio SQL services instead of SSMS SMO
+                await InitializeVsSqlServices();
 
-                //_dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+                _dte = await GetServiceAsync(typeof(DTE)) as DTE2;
 
-                //// initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
-                //string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
-                //SimpleLogger.Info(Resource.Package_Initializing);
+                // initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
+                string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
+                SimpleLogger.Info(Resource.Package_Initializing);
 
-                //// SSMS 22 uses EnvDTE 18; avoid DTE event handlers compiled against EnvDTE 8.
-                //// SQL editor hooks are applied when the shortcuts UI opens instead.
+                // SSMS 22 uses EnvDTE 18; avoid DTE event handlers compiled against EnvDTE 8.
+                // SQL editor hooks are applied when the shortcuts UI opens instead.
 
-                //LoadSqlShortcuts(); // load any existing shortcuts
-                //await LoadVsStatusBarReference(); // allow ext to update VS statusbar
-                //await MonitorEditorWindow(); // capture events when user types into SQL editor
-                //await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
+                LoadSqlShortcuts(); // load any existing shortcuts
+                await LoadVsStatusBarReference(); // allow ext to update VS statusbar
+                await MonitorEditorWindow(); // capture events when user types into SQL editor
+                await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
 
-                //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-                //if (IsDemo)
-                //{
-                //    message = "(Demo Version) - " + message;
-                //}
-                //StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
+                string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
+                if (IsDemo)
+                {
+                    message = "(Demo Version) - " + message;
+                }
+                StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
             }
             catch (Exception ex)
             {
@@ -256,33 +255,35 @@ namespace VSIX_Demo
                 //    OnWindowActivated(_dte.ActiveWindow, null);
                 //}
 
-                _dte.Events.WindowEvents.WindowActivated += (gotFocus, lostFocus) =>
-                {
-                    ThreadHelper.ThrowIfNotOnUIThread();
+                _dte.Events.WindowEvents.WindowActivated += OnWindowActivated;
 
-                    try
-                    {
-                        if (gotFocus?.Document == null)
-                            return;
+                //_dte.Events.WindowEvents.WindowActivated += (gotFocus, lostFocus) =>
+                //{
+                //    ThreadHelper.ThrowIfNotOnUIThread();
 
-                        if (!gotFocus.Document.FullName.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
-                            return;
+                //    try
+                //    {
+                //        if (gotFocus?.Document == null)
+                //            return;
 
-                        var textManager = ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager)) as IVsTextManager;
-                        if (textManager == null)
-                            return;
+                //        if (!gotFocus.Document.FullName.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+                //            return;
 
-                        if (ErrorHandler.Failed(textManager.GetActiveView(1, null, out IVsTextView view)))
-                            return;
+                //        var textManager = ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager)) as IVsTextManager;
+                //        if (textManager == null)
+                //            return;
 
-                        // 🔥 THIS is now the ONLY hook point you need
-                        _hookService.Hook(view);
-                    }
-                    catch (Exception ex)
-                    {
-                        SimpleLogger.Error(ex.Message);
-                    }
-                };
+                //        if (ErrorHandler.Failed(textManager.GetActiveView(1, null, out IVsTextView view)))
+                //            return;
+
+                //        // 🔥 THIS is now the ONLY hook point you need
+                //        _hookService.Hook(view);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        SimpleLogger.Error(ex.Message);
+                //    }
+                //};
             }
             catch (Exception ex)
             {
