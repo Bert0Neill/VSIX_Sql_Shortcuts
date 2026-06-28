@@ -4,11 +4,11 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Shortcuts", "SQL_Shortcuts.csproj", "{10A31ECA-B417-404E-AD06-41BC95A1C0E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SSMS Versions", "SSMS Versions", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Versions", "SQL Versions", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_22", "..\SQL-Insight-Buddy\SQL Versions\SSMS_22_SqlAdjust\SSMS_SqlAdjust_22.csproj", "{D683B503-995F-463B-B75E-2C83CAA30DFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_22", "SQL Versions\SSMS_22_SqlAdjust\SSMS_SqlAdjust_22.csproj", "{D683B503-995F-463B-B75E-2C83CAA30DFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_Interfaces", "..\SQL-Insight-Buddy\SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj", "{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_Interfaces", "SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj", "{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

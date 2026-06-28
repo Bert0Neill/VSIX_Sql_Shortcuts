@@ -242,14 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.SqlServer.Management.Sdk.SqlStudio">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Microsoft.SqlServer.Management.Sdk.SqlStudio.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Management.SqlStudio.Explorer">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\Application\Microsoft.SqlServer.Management.SqlStudio.Explorer.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.Data.Services, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.Data.Services.dll</HintPath>
@@ -558,12 +550,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SQL-Insight-Buddy\SQL Versions\SSMS_22_SqlAdjust\SSMS_SqlAdjust_22.csproj">
+    <ProjectReference Include="SQL Versions\SSMS_22_SqlAdjust\SSMS_SqlAdjust_22.csproj">
       <Project>{d683b503-995f-463b-b75e-2c83caa30dff}</Project>
       <Name>SSMS_SqlAdjust_22</Name>
       <Aliases>ssms22</Aliases>
     </ProjectReference>
-    <ProjectReference Include="..\SQL-Insight-Buddy\SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
+    <ProjectReference Include="SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
       <Project>{64b5fbbb-a832-46ba-bb61-bdfaf4a15286}</Project>
       <Name>SSMS_SqlAdjust_Interfaces</Name>
     </ProjectReference>
