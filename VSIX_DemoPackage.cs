@@ -46,11 +46,13 @@
 //
 // ==============================================
 
-//extern alias ssms20;
+//extern alias ssms21;
+extern alias ssms22;
 
 //using EnvDTE;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.SqlServer.Management.UI.VSIntegration.ObjectExplorer;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
@@ -60,17 +62,22 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using SQL_Shortcuts_SSMS21Plus.Resources;
+using SSMS_SqlAdjust_Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 using VSIX_AutoComplete_SSMS.Classes;
 using VSIX_AutoComplete_SSMS.Models;
 using VSIX_Demo.Helper;
+using VSIX_Demo.Models;
+using Windows.Media.Core;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -100,6 +107,11 @@ namespace VSIX_Demo
         //private IVsDataExplorerService _dataExplorerService;
         //private IVsObjectSearch _objectSearch;
 
+        private TreeView treeView;
+        private IObjectExplorerService objectExplorerService;
+        private SsmsHelper _helperService;
+        public static IObjectExplorerHelper _smoObjectExplorer;
+
 
         // Event handling for SQL Server connections and schema changes
         private const string SELECTION_EVENT = "DataConnection_SelectionChanged";
@@ -118,12 +130,47 @@ namespace VSIX_Demo
 
                 await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-                System.Diagnostics.Debug.WriteLine("PACKAGE LOADED");
-
                 // Initialize Visual Studio SQL services instead of SSMS SMO
-                await InitializeVsSqlServices();
+                // await InitializeVsSqlServices();
 
-                _dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+                //_dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+
+
+                try
+                {
+                    _helperService = new SsmsHelper();
+                    var ssmsVersion = _helperService.RetrieveSsmsVersion();
+                    System.Diagnostics.Debug.WriteLine($"KnowledgeIncidentAnalysisAI loaded - {ssmsVersion}");
+                    Console.WriteLine($"KnowledgeIncidentAnalysisAI loaded - {ssmsVersion}");
+
+                    InitializeSmoObjectExplorer(ssmsVersion);
+
+                    objectExplorerService = _smoObjectExplorer.GetObjectExplorer();
+                }
+                catch (Exception ex)
+                {
+                    SimpleLogger.Error(ex.ToString());
+                    return;
+                }
+
+                if (objectExplorerService == null)
+                    return;
+
+                var treeProperty = objectExplorerService.GetType()
+                    .GetProperty("Tree", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+                if (treeProperty == null)
+                    return;
+
+                treeView = treeProperty.GetValue(objectExplorerService, null) as TreeView;
+
+                if (treeView == null)
+                    return;
+
+                treeView.ContextMenuStripChanged += TreeView_ContextMenuStripChanged;
+
+                Debug.WriteLine("SSMS integration complete");
+
 
                 // initialise logger before any DTE event subscriptions (SSMS 22 requires EnvDTE 18 interop)
                 string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
@@ -137,17 +184,65 @@ namespace VSIX_Demo
                 await MonitorEditorWindow(); // capture events when user types into SQL editor
                 await VSIX_AutoComplete_SSMS.Commands.cmdShortcuts.InitializeAsync(this); // initialise Tools menu command
 
-                string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-                if (IsDemo)
-                {
-                    message = "(Demo Version) - " + message;
-                }
+                string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");                
                 StatusBarService.UpdateStatusBarText(message); // update VS status-bar with log file path
             }
             catch (Exception ex)
             {
                 SimpleLogger.Error($"{ex.Message}");
             }
+        }
+
+        private void TreeView_ContextMenuStripChanged(object sender, EventArgs e)
+        {
+            
+
+            if (treeView.SelectedNode == null || treeView.ContextMenuStrip == null)
+            {
+                return;
+            }
+
+            if (treeView.ContextMenuStrip.Items == null)
+            {
+                return;
+            }
+
+            //get the selected tree node
+            objectExplorerService.GetSelectedNodes(out int arraySize, out INodeInformation[] nodes);
+            if (arraySize == 0 || nodes.Length == 0)
+            {
+                return;
+            }
+
+            //get meta data from tree node
+            NodeInfo nodeInfo = nodes[0].GetInfo();
+
+            
+
+            
+
+
+           
+        }
+
+        private void InitializeSmoObjectExplorer(string ssmsVersion)
+        {
+            switch (ssmsVersion)
+            {
+               
+                //case "SSMS 21":
+                //    _smoObjectExplorer = new ssms21::SSMS_21_SqlAdjust.SmoObjectExplorer(this);
+                //    break;
+                case "SSMS 22":
+                    _smoObjectExplorer = new ssms22::SSMS_22_SqlAdjust.SmoObjectExplorer(this);
+                    break;
+                default:
+                    // default to SSMS 21 - currently most common version
+                    _smoObjectExplorer = new ssms22::SSMS_22_SqlAdjust.SmoObjectExplorer(this);
+                    break;
+            }
+
+            _smoObjectExplorer.HookSelectionChanged(SELECTION_EVENT);
         }
 
         private async Task InitializeVsSqlServices()

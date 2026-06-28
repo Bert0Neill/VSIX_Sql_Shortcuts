@@ -38,6 +38,9 @@ namespace VSIX_AutoComplete_SSMS.Classes
                     case 21:
                         ssmsVersion = "SSMS 21";
                         break;
+                    case 22:
+                        ssmsVersion = "SSMS 22";
+                        break;
                     default:
                         ssmsVersion = "Unknown";
                         break;
