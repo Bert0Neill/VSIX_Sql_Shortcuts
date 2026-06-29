@@ -62,7 +62,7 @@
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
-    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Extensions\Sql_Shortcuts_21Plus</CopyVsixExtensionLocation>
+    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Extensions\Sql_Shortcuts_21Plus</CopyVsixExtensionLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -74,11 +74,11 @@
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\SsmsHelper.cs" />
-    <Compile Include="Classes\StatusBarService.cs" />
-    <Compile Include="Classes\InlineCSharpHelper.cs" />
-    <Compile Include="Classes\ShortcutEvaluation.cs" />
-    <Compile Include="Classes\FileService.cs" />
+    <Compile Include="Services\SsmsHelper.cs" />
+    <Compile Include="Services\StatusBarService.cs" />
+    <Compile Include="Services\InlineCSharpHelper.cs" />
+    <Compile Include="Services\ShortcutEvaluation.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Commands\cmdShortcuts.cs" />
     <Compile Include="Forms\frmCRUD.cs">
       <SubType>Form</SubType>
@@ -92,7 +92,7 @@
     <Compile Include="Forms\frmShortcuts.Designer.cs">
       <DependentUpon>frmShortcuts.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\SimpleLogger.cs" />
+    <Compile Include="Services\SimpleLogger.cs" />
     <Compile Include="Helper\Class1.cs" />
     <Compile Include="Models\DatabaseObjectReference.cs" />
     <Compile Include="Models\Extensions.cs" />
@@ -131,6 +131,13 @@
     <None Include="app.config" />
     <None Include="Config\sqlShortcuts.json" />
     <None Include="Misc\SSMS VSIX.one" />
+    <Content Include="Misc\Assemblies\18\PlaceHolder.txt" />
+    <Content Include="Misc\Assemblies\19\PlaceHolder.txt" />
+    <Content Include="Misc\Assemblies\21\ObjectExplorer.dll" />
+    <Content Include="Misc\Assemblies\21\SqlWorkbench.Interfaces.dll" />
+    <Content Include="Misc\Assemblies\22\ObjectExplorer.dll" />
+    <Content Include="Misc\Assemblies\22\SqlWorkbench.Interfaces.dll" />
+    <Content Include="Misc\Assemblies\25\PlaceHolder.txt" />
     <Content Include="Misc\User Guide\User Guide - SQL Shortcuts SSMS Extension.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

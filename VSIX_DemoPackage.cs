@@ -13,7 +13,7 @@
 // - Updates Visual Studio's status bar based on actions in the editor.
 //
 // License Agreement:
-// © Asynchronous Software - 2025. All rights reserved.
+// © Bert O'Neill Software - 2026. All rights reserved.
 //
 // This Software and any associated materials are confidential and proprietary to Bert O'Neill ("Licensor").
 // By using this Software, you are agreeing to comply with the terms of this License Agreement.
@@ -41,7 +41,7 @@
 //
 // For licensing inquiries, support, or additional information, please contact:
 // Bert O'Neill
-// Email: BertONeill@Yahoo.Com
+// Email: BertONeill@Yahoo.com
 //
 // ==============================================
 
