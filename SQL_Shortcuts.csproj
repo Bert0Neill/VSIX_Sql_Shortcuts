@@ -93,7 +93,7 @@
       <DependentUpon>frmShortcuts.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\SimpleLogger.cs" />
-    <Compile Include="Helper\Class1.cs" />
+    <Compile Include="Helper\SsmsState.cs" />
     <Compile Include="Models\DatabaseObjectReference.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\MenuObjects\MenuItem.cs" />
@@ -130,8 +130,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Config\sqlShortcuts.json" />
-    <None Include="Misc\SSMS VSIX.one" />
+    <None Include="Misc\SSMS VSIX.one" />    
+    <Content Include="Misc\Assemblies\18\ObjectExplorer.dll" />
     <Content Include="Misc\Assemblies\18\PlaceHolder.txt" />
+    <Content Include="Misc\Assemblies\18\SqlWorkbench.Interfaces.dll" />
     <Content Include="Misc\Assemblies\19\PlaceHolder.txt" />
     <Content Include="Misc\Assemblies\22\ObjectExplorer.dll" />
     <Content Include="Misc\Assemblies\22\SqlWorkbench.Interfaces.dll" />
@@ -253,6 +255,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="SqlWorkbench.Interfaces">
       <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Syncfusion.Core.WinForms, Version=25.1462.35.0, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>$(SyncfusionPath)\Assemblies\4.6.2\Syncfusion.Core.WinForms.dll</HintPath>
