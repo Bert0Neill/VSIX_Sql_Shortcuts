@@ -133,8 +133,6 @@
     <None Include="Misc\SSMS VSIX.one" />
     <Content Include="Misc\Assemblies\18\PlaceHolder.txt" />
     <Content Include="Misc\Assemblies\19\PlaceHolder.txt" />
-    <Content Include="Misc\Assemblies\21\ObjectExplorer.dll" />
-    <Content Include="Misc\Assemblies\21\SqlWorkbench.Interfaces.dll" />
     <Content Include="Misc\Assemblies\22\ObjectExplorer.dll" />
     <Content Include="Misc\Assemblies\22\SqlWorkbench.Interfaces.dll" />
     <Content Include="Misc\Assemblies\25\PlaceHolder.txt" />
@@ -233,7 +231,6 @@
     <Content Include="Images\Fatcow-Farm-Fresh-Db-sql-server.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Misc\VS code.txt" />
     <Content Include="Release Notes for VSIX SSMS Sql Shortcuts.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
