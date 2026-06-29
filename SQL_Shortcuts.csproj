@@ -130,7 +130,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Config\sqlShortcuts.json" />
-    <None Include="Misc\SSMS VSIX.one" />    
+    <None Include="Misc\SSMS VSIX.one" />
     <Content Include="Misc\Assemblies\18\ObjectExplorer.dll" />
     <Content Include="Misc\Assemblies\18\PlaceHolder.txt" />
     <Content Include="Misc\Assemblies\18\SqlWorkbench.Interfaces.dll" />
