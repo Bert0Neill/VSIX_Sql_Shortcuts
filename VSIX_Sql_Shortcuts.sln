@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_22", "SQL Ve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_Interfaces", "SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj", "{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_SqlAdjust_21", "SQL Versions\SSMS_21_SqlAdjust\SSMS_SqlAdjust_21.csproj", "{CF35B71A-8441-48D9-92A5-DFBED33AAB65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMS_21_SqlAdjust", "SQL Versions\SSMS_21_SqlAdjust\SSMS_21_SqlAdjust.csproj", "{CF35B71A-8441-48D9-92A5-DFBED33AAB65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

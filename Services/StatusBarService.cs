@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.Shell;
 using System;
 using Task = System.Threading.Tasks.Task;
-using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts.Resources;
 
 namespace VSIX_SqlShortcuts.Classes
 {

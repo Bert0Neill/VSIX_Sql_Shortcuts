@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using VSIX_SqlShortcuts.Classes;
 using VSIX_SqlShortcuts.Models;
 using Action = System.Action;
-using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts.Resources;
 using VSIX_SqlShortcuts;
 
 namespace VSIX_SqlShortcuts.Forms

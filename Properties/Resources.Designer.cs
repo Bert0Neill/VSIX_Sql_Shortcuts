@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SQL_Shortcuts_SSMS21Plus.Properties {
+namespace SQL_Shortcuts.Properties {
     using System;
     
     

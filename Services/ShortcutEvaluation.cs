@@ -11,8 +11,8 @@ using Microsoft.VisualStudio.Text;
 using VSIX_SqlShortcuts.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SQL_Shortcuts_SSMS21Plus.Resources;
-using SQL_Shortcuts_SSMS21Plus.Helper;
+using SQL_Shortcuts.Resources;
+using SQL_Shortcuts.Helper;
 
 namespace VSIX_SqlShortcuts.Classes
 {

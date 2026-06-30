@@ -1,7 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.IO;
-using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts.Resources;
 
 namespace VSIX_SqlShortcuts.Classes
 {

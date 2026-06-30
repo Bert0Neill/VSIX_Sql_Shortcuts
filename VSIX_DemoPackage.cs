@@ -47,18 +47,15 @@
 
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.SqlServer.Management.UI.VSIntegration.ObjectExplorer;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
-using SQL_Shortcuts_SSMS21Plus.Helper;
-using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts.Helper;
+using SSMS_SqlAdjust_Interfaces;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -97,7 +94,7 @@ namespace VSIX_SqlShortcuts
             {
                 "ObjectExplorer",
                 "SqlWorkbench.Interfaces",
-                "Microsoft.VisualStudio.Shell.15.0",
+                //"Microsoft.VisualStudio.Shell.15.0",
                 // Add other VS assemblies that might be missing, e.g.:
                 // "Microsoft.VisualStudio.Shell.Interop",
                 // "Microsoft.VisualStudio.OLE.Interop",
@@ -139,7 +136,8 @@ namespace VSIX_SqlShortcuts
         // =====================================================
         // Class variables
         // =====================================================
-        private IObjectExplorerService _objectExplorer;
+        //private IObjectExplorerService _objectExplorer;
+        private IObjectExplorerHelper _objectExplorerHelper;
         private System.Windows.Forms.Timer _pollingTimer;
         private string _lastUrn;
         private DTE2 _dte;
@@ -154,113 +152,159 @@ namespace VSIX_SqlShortcuts
         // =====================================================
         // Entry point
         // =====================================================
+
+        //protected override async Task InitializeAsync(    CancellationToken cancellationToken,    IProgress<ServiceProgressData> progress)
+        //{
+        //    try
+        //    {
+        //        await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+        //        // existing code
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SimpleLogger.Error($"InitializeAsync failed: {ex}");
+        //    }
+        //}
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            _objectExplorer = GetService(typeof(IObjectExplorerService)) as IObjectExplorerService;
-            if (_objectExplorer == null) return;
+            ////_objectExplorer = GetService(typeof(IObjectExplorerService)) as IObjectExplorerService;
+            ////if (_objectExplorer == null) return;
 
-            string logFilename = SimpleLogger.Initialize(SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.LogFilename);
-            SimpleLogger.Info(Resource.Package_Initializing);
+            _objectExplorerHelper = CreateObjectExplorerHelper();
 
-            LoadSqlShortcuts();
+            //if (_objectExplorerHelper != null)
+            //{
+            //    _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
 
-            await MonitorEditorWindow();
-            await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
+            //    _objectExplorerHelper.StartMonitoring();
+            //}
 
-            await LoadVsStatusBarReference();
-            string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-            StatusBarService.UpdateStatusBarText(message);
 
-            StartObjectExplorerMonitor();
+            //string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
+            //SimpleLogger.Info(Resource.Package_Initializing);
+
+            //LoadSqlShortcuts();
+
+            //await MonitorEditorWindow();
+            //await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
+
+            //await LoadVsStatusBarReference();
+            //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
+            //StatusBarService.UpdateStatusBarText(message);
+
+            ////StartObjectExplorerMonitor();
+        }
+
+        private void ObjectExplorerSelectionChanged(object sender, string selectedNode)
+        {
+            SsmsState.Instance.SelectedTableOrView = selectedNode;
+
+            Debug.WriteLine($"Selected SMO Node = {selectedNode}");
+        }
+
+        private IObjectExplorerHelper CreateObjectExplorerHelper()
+        {
+            string version = GetSsmsMajorVersion();
+
+            string assemblyName;
+            string typeName;
+
+            if (version == "22")
+            {
+                assemblyName = "SSMS_22_SqlAdjust.dll";
+                typeName =
+                    "SSMS_SqlAdjust.SmoObjectExplorer";
+            }
+            else
+            {
+                assemblyName = "SSMS_21_SqlAdjust.dll";
+                typeName =
+                    "SSMS_SqlAdjust.SmoObjectExplorer";
+            }
+
+            string dllPath =
+                Path.Combine(
+                    Path.GetDirectoryName(
+                        Assembly.GetExecutingAssembly()
+                        .Location),
+                    assemblyName);
+
+            Debug.WriteLine(dllPath);
+
+            var asm = Assembly.LoadFrom(dllPath);
+
+            try
+            {
+                var types = asm.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                foreach (var loaderException in ex.LoaderExceptions)
+                {
+                    SimpleLogger.Error(loaderException.ToString());
+                    Debug.WriteLine(loaderException.ToString());
+                }
+
+                throw;
+            }
+
+
+            var type = asm.GetType(typeName);
+
+            //return
+            //    (IObjectExplorerHelper)
+            //    Activator.CreateInstance(
+            //        type,
+            //        this);
+
+            try
+            {
+                return (IObjectExplorerHelper) Activator.CreateInstance(type, this);
+            }
+            catch (Exception ex)
+            {
+                SimpleLogger.Error(ex.ToString());
+
+                if (ex.InnerException != null)
+                {
+                    SimpleLogger.Error("INNER:");
+                    SimpleLogger.Error(ex.InnerException.ToString());
+                }
+
+                throw;
+            }
+
+        }
+
+        private string GetSsmsMajorVersion()
+        {
+            try
+            {
+                string exe =
+                    System.Diagnostics.Process.GetCurrentProcess()
+                    .MainModule.FileName;
+
+                FileVersionInfo info =
+                    FileVersionInfo
+                    .GetVersionInfo(exe);
+
+                return info.ProductMajorPart
+                    .ToString();
+            }
+            catch
+            {
+                return "21";
+            }
         }
 
         // =====================================================
         // OBJECT EXPLORER MONITOR using Windows.Forms.Timer
         // =====================================================
-        private void StartObjectExplorerMonitor()
-        {
-            _pollingTimer = new System.Windows.Forms.Timer();
-            _pollingTimer.Interval = 150;
-            _pollingTimer.Tick += PollObjectExplorer;
-            _pollingTimer.Start();
-        }
-
-        private void PollObjectExplorer(object sender, EventArgs e)
-        {
-            try
-            {
-                _objectExplorer.GetSelectedNodes(
-                    out int count,
-                    out INodeInformation[] nodes);
-
-                if (count > 0 && nodes != null && nodes.Length > 0)
-                {
-                    var node = nodes[0];
-                    string name = Get(node, "InvariantName");
-                    string urn = TryGetUrn(node);
-
-                    if (string.IsNullOrEmpty(urn))
-                        return;
-
-                    bool isTable = urn.IndexOf("Table", StringComparison.OrdinalIgnoreCase) >= 0;
-                    bool isView = urn.IndexOf("View", StringComparison.OrdinalIgnoreCase) >= 0;
-
-                    string signature = name + "|" + urn;
-
-                    if (signature != _lastUrn)
-                    {
-                        _lastUrn = signature;
-
-                        if (isTable || isView)
-                        {
-                            SsmsState.Instance.SelectedTableOrView = name;
-                        }
-                        else
-                        {
-                            SsmsState.Instance.SelectedTableOrView = null;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("OE error: " + ex.Message);
-            }
-        }
-
-        private string TryGetUrn(INodeInformation node)
-        {
-            try
-            {
-                var type = node.GetType();
-                var prop = type.GetProperty("Urn");
-                if (prop != null)
-                    return prop.GetValue(node)?.ToString();
-                var prop2 = type.GetProperty("UrnPath");
-                if (prop2 != null)
-                    return prop2.GetValue(node)?.ToString();
-                var method = type.GetMethod("GetUrn");
-                if (method != null)
-                    return method.Invoke(node, null)?.ToString();
-            }
-            catch { }
-            return null;
-        }
-
-        private string Get(INodeInformation node, string prop)
-        {
-            try
-            {
-                var p = node.GetType().GetProperty(prop);
-                return p?.GetValue(node)?.ToString();
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        
 
         // =====================================================
         // Load SQL shortcuts (unchanged)
@@ -269,7 +313,7 @@ namespace VSIX_SqlShortcuts
         {
             try
             {
-                string FOLDER_FILENAME = SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.ConfigFile;
+                string FOLDER_FILENAME = SQL_Shortcuts.Properties.Settings.Default.ConfigFile;
                 _fileService = new FileService();
                 _filePath = Path.Combine(Directory.GetCurrentDirectory(), FOLDER_FILENAME);
 
@@ -301,13 +345,9 @@ namespace VSIX_SqlShortcuts
         {
             if (disposing)
             {
-                if (_pollingTimer != null)
-                {
-                    _pollingTimer.Stop();
-                    _pollingTimer.Dispose();
-                    _pollingTimer = null;
-                }
+                _objectExplorerHelper?.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using VSIX_SqlShortcuts.Models;
-using SQL_Shortcuts_SSMS21Plus.Resources;
+using SQL_Shortcuts.Resources;
 
 namespace VSIX_SqlShortcuts.Classes
 {

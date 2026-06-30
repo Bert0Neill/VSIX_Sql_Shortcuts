@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQL_Shortcuts_SSMS21Plus.Helper
+namespace SQL_Shortcuts.Helper
 {
     public sealed class SsmsState
     {

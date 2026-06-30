@@ -90,7 +90,7 @@
             gridTextColumn1.HeaderStyle.Font.Bold = true;
             gridTextColumn1.HeaderStyle.Font.Facename = "Microsoft Sans Serif";
             gridTextColumn1.HeaderStyle.Font.Size = 10F;
-            gridTextColumn1.HeaderText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Grid_Header_Shortcut;
+            gridTextColumn1.HeaderText = global::SQL_Shortcuts.Resources.Resource.Grid_Header_Shortcut;
             gridTextColumn1.MappingName = "SqlShort";
             gridTextColumn1.MinimumWidth = 200D;
             gridTextColumn1.ValidationMode = Syncfusion.WinForms.DataGrid.Enums.GridValidationMode.InView;
@@ -103,7 +103,7 @@
             gridTextColumn2.HeaderStyle.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             gridTextColumn2.HeaderStyle.Font.Bold = true;
             gridTextColumn2.HeaderStyle.Font.Size = 10F;
-            gridTextColumn2.HeaderText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Grid_Header_Sql_Expression;
+            gridTextColumn2.HeaderText = global::SQL_Shortcuts.Resources.Resource.Grid_Header_Sql_Expression;
             gridTextColumn2.MappingName = "SqlComplete";
             gridTextColumn2.TextTrimming = System.Drawing.StringTrimming.None;
             gridTextColumn2.ValidationMode = Syncfusion.WinForms.DataGrid.Enums.GridValidationMode.InView;
@@ -118,7 +118,7 @@
             gridButtonColumn1.HeaderStyle.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             gridButtonColumn1.HeaderStyle.Font.Bold = true;
             gridButtonColumn1.HeaderStyle.Font.Size = 10F;
-            gridButtonColumn1.HeaderText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Grid_Header_Delete;
+            gridButtonColumn1.HeaderText = global::SQL_Shortcuts.Resources.Resource.Grid_Header_Delete;
             gridButtonColumn1.Image = ((System.Drawing.Image)(resources.GetObject("gridButtonColumn1.Image")));
             gridButtonColumn1.ImageSize = new System.Drawing.Size(0, 0);
             gridButtonColumn1.MappingName = "colDelete";
@@ -134,7 +134,7 @@
             gridButtonColumn2.HeaderStyle.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             gridButtonColumn2.HeaderStyle.Font.Bold = true;
             gridButtonColumn2.HeaderStyle.Font.Size = 10F;
-            gridButtonColumn2.HeaderText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Grid_Header_Edit;
+            gridButtonColumn2.HeaderText = global::SQL_Shortcuts.Resources.Resource.Grid_Header_Edit;
             gridButtonColumn2.Image = ((System.Drawing.Image)(resources.GetObject("gridButtonColumn2.Image")));
             gridButtonColumn2.ImageSize = new System.Drawing.Size(0, 0);
             gridButtonColumn2.MappingName = "colEdit";
@@ -146,12 +146,12 @@
             gridButtonColumn3.AllowResizing = true;
             gridButtonColumn3.ButtonSize = new System.Drawing.Size(0, 0);
             gridButtonColumn3.CellStyle.HorizontalAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            gridButtonColumn3.DefaultButtonText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Test;
+            gridButtonColumn3.DefaultButtonText = global::SQL_Shortcuts.Resources.Resource.Button_Test;
             gridButtonColumn3.HeaderStyle.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             gridButtonColumn3.HeaderStyle.FilterIconColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(29)))));
             gridButtonColumn3.HeaderStyle.Font.Bold = true;
             gridButtonColumn3.HeaderStyle.Font.Size = 10F;
-            gridButtonColumn3.HeaderText = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Grid_Eval_Header;
+            gridButtonColumn3.HeaderText = global::SQL_Shortcuts.Resources.Resource.Grid_Eval_Header;
             gridButtonColumn3.ImageSize = new System.Drawing.Size(0, 0);
             gridButtonColumn3.MappingName = "EvalExpression";
             gridButtonColumn3.ValidationMode = Syncfusion.WinForms.DataGrid.Enums.GridValidationMode.InView;
@@ -186,7 +186,7 @@
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(670, 20);
-            this.toolStripStatusLabel.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Status_Auto_Save_Enabled;
+            this.toolStripStatusLabel.Text = global::SQL_Shortcuts.Resources.Resource.Status_Auto_Save_Enabled;
             // 
             // btnAdd
             // 
@@ -198,7 +198,7 @@
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(188, 47);
             this.btnAdd.TabIndex = 5;
-            this.btnAdd.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Add_New_Shortcut;
+            this.btnAdd.Text = global::SQL_Shortcuts.Resources.Resource.Button_Add_New_Shortcut;
             this.tlTipExpression.SetToolTip(this.btnAdd, "Add a new SQL shortcut");
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -217,7 +217,7 @@
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(207, 47);
             this.btnExport.TabIndex = 6;
-            this.btnExport.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Button_Export_Shortcuts;
+            this.btnExport.Text = global::SQL_Shortcuts.Resources.Resource.Button_Export_Shortcuts;
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -237,7 +237,7 @@
             this.MinimizeBox = false;
             this.Name = "frmShortcuts";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = global::SQL_Shortcuts_SSMS21Plus.Resources.Resource.Form_Sql_Expression_Shortcuts;
+            this.Text = global::SQL_Shortcuts.Resources.Resource.Form_Sql_Expression_Shortcuts;
             this.Load += new System.EventHandler(this.frmShortcuts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.sfDataGridShortCuts)).EndInit();
             this.shortcutStatusBar.ResumeLayout(false);

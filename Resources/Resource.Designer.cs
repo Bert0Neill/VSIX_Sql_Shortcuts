@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SQL_Shortcuts_SSMS21Plus.Resources {
+namespace SQL_Shortcuts.Resources {
     using System;
     
     

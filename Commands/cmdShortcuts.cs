@@ -77,7 +77,7 @@ namespace VSIX_SqlShortcuts.Commands
             try
             {
                 SyncfusionLicenseProvider.RegisterLicense(
-                    SQL_Shortcuts_SSMS21Plus.Properties.Settings.Default.SyncfusionKey);
+                    SQL_Shortcuts.Properties.Settings.Default.SyncfusionKey);
                 var frm = new frmShortcuts();
                 frm.ShowDialog();
             }

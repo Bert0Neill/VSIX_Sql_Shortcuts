@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SSMS_SqlAdjust</RootNamespace>
-    <AssemblyName>SSMS_SqlAdjust_21</AssemblyName>
+    <AssemblyName>SSMS_21_SqlAdjust</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -38,8 +38,12 @@
     <AssemblyOriginatorKeyFile>SqlShortcuts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
     <Reference Include="SqlWorkbench.Interfaces">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,13 +60,13 @@
     <Compile Include="SmoObjectExplorer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
-      <Project>{64B5FBBB-A832-46BA-BB61-BDFAF4A15286}</Project>
-      <Name>SSMS_SqlAdjust_Interfaces</Name>
-    </ProjectReference>
+    <None Include="SqlShortcuts.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SqlShortcuts.snk" />
+    <ProjectReference Include="..\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
+      <Project>{64b5fbbb-a832-46ba-bb61-bdfaf4a15286}</Project>
+      <Name>SSMS_SqlAdjust_Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
