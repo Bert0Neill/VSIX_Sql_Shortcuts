@@ -55,6 +55,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using SQL_Shortcuts.Helper;
+using SQL_Shortcuts.Resources;
 using SSMS_SqlAdjust_Interfaces;
 using System;
 using System.ComponentModel;
@@ -171,23 +172,19 @@ namespace VSIX_SqlShortcuts
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            ////_objectExplorer = GetService(typeof(IObjectExplorerService)) as IObjectExplorerService;
-            ////if (_objectExplorer == null) return;
-
             _objectExplorerHelper = CreateObjectExplorerHelper();
 
-            //if (_objectExplorerHelper != null)
-            //{
-            //    _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
+            if (_objectExplorerHelper != null)
+            {
+                //_objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
+                //_objectExplorerHelper.StartMonitoring();
+            }
 
-            //    _objectExplorerHelper.StartMonitoring();
-            //}
 
+            string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
+            SimpleLogger.Info(Resource.Package_Initializing);
 
-            //string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
-            //SimpleLogger.Info(Resource.Package_Initializing);
-
-            //LoadSqlShortcuts();
+            LoadSqlShortcuts();
 
             //await MonitorEditorWindow();
             //await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
@@ -195,8 +192,6 @@ namespace VSIX_SqlShortcuts
             //await LoadVsStatusBarReference();
             //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
             //StatusBarService.UpdateStatusBarText(message);
-
-            ////StartObjectExplorerMonitor();
         }
 
         private void ObjectExplorerSelectionChanged(object sender, string selectedNode)
@@ -233,51 +228,11 @@ namespace VSIX_SqlShortcuts
                         .Location),
                     assemblyName);
 
-            Debug.WriteLine(dllPath);
-
             var asm = Assembly.LoadFrom(dllPath);
-
-            try
-            {
-                var types = asm.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                foreach (var loaderException in ex.LoaderExceptions)
-                {
-                    SimpleLogger.Error(loaderException.ToString());
-                    Debug.WriteLine(loaderException.ToString());
-                }
-
-                throw;
-            }
-
 
             var type = asm.GetType(typeName);
 
-            //return
-            //    (IObjectExplorerHelper)
-            //    Activator.CreateInstance(
-            //        type,
-            //        this);
-
-            try
-            {
-                return (IObjectExplorerHelper) Activator.CreateInstance(type, this);
-            }
-            catch (Exception ex)
-            {
-                SimpleLogger.Error(ex.ToString());
-
-                if (ex.InnerException != null)
-                {
-                    SimpleLogger.Error("INNER:");
-                    SimpleLogger.Error(ex.InnerException.ToString());
-                }
-
-                throw;
-            }
-
+            return (IObjectExplorerHelper)Activator.CreateInstance(type, this);
         }
 
         private string GetSsmsMajorVersion()
