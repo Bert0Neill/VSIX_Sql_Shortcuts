@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
 using System;
-using VSIX_SqlShortcuts;
 using Microsoft.VisualStudio.Text;
 using VSIX_SqlShortcuts.Models;
 using System.Linq;
@@ -89,7 +88,6 @@ namespace VSIX_SqlShortcuts.Classes
                                                 evaluatedQuery = Regex.Replace(
                                                     evaluatedQuery,
                                                     Table_TAG,
-                                                    //VSIX_DemoPackage.SelectedSmoNode,
                                                     SsmsState.Instance.SelectedTableOrView,
                                                     RegexOptions.IgnoreCase
                                                 );

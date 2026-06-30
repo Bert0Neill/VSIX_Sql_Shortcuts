@@ -62,6 +62,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -73,7 +74,10 @@ namespace VSIX_SqlShortcuts
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    //[ProvideMenuResource("VSIX_DemoPackage.ctmenu", 1)]   // use the exact Resource Name VSIX_DemoPackage
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [Guid("4607758b-acdd-4838-adb8-1dc2cfa69b00")]
+
     public sealed class VSIX_DemoPackage : AsyncPackage
     {
         // =====================================================
@@ -153,21 +157,6 @@ namespace VSIX_SqlShortcuts
         // =====================================================
         // Entry point
         // =====================================================
-
-        //protected override async Task InitializeAsync(    CancellationToken cancellationToken,    IProgress<ServiceProgressData> progress)
-        //{
-        //    try
-        //    {
-        //        await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
-        //        // existing code
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        SimpleLogger.Error($"InitializeAsync failed: {ex}");
-        //    }
-        //}
-
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
@@ -188,7 +177,7 @@ namespace VSIX_SqlShortcuts
             LoadSqlShortcuts();
 
             await MonitorEditorWindow();
-            //await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
+            await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
 
             await LoadVsStatusBarReference();
             string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
