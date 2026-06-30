@@ -1,11 +1,9 @@
 ﻿using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Syncfusion.Licensing;
 using System;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using VSIX_SqlShortcuts.Forms;

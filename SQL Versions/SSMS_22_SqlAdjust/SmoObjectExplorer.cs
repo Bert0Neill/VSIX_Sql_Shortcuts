@@ -2,214 +2,223 @@
 using SSMS_SqlAdjust_Interfaces;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace SSMS_22_SqlAdjust
 {
     public class SmoObjectExplorer : IObjectExplorerHelper
     {
-        private IServiceProvider _package { get; }
+        private readonly IServiceProvider _package;
         private Delegate _handlerDelegate;
-        public string SelectedSmoNode { get; set; }
+
+        public string SelectedSmoNode { get; private set; }
+
+        public event EventHandler<string> SelectionChanged;
 
         public SmoObjectExplorer(IServiceProvider package)
         {
-            _package = package ?? throw new ArgumentNullException(nameof(package));
+            _package = package;
         }
 
-        public void HookSelectionChanged(string methodName)
+        public void StartMonitoring()
         {
-            try
+            HookSelectionChanged(nameof(Provider_SelectionChanged));
+        }
+
+        private IObjectExplorerService GetObjectExplorer()
+        {
+            return _package.GetService(
+                typeof(IObjectExplorerService))
+                as IObjectExplorerService;
+        }
+
+        private void HookSelectionChanged(string methodName)
+        {
+            var objectExplorer = GetObjectExplorer();
+
+            if (objectExplorer == null)
+                return;
+
+            var objectExplorerType =
+                objectExplorer.GetType();
+
+            var piContainer =
+                objectExplorerType.GetProperty(
+                    "Container");
+
+            var container =
+                piContainer?.GetValue(objectExplorer);
+
+            if (container == null)
+                return;
+
+            var piComponents =
+                container.GetType().GetProperty(
+                    "Components");
+
+            var components =
+                piComponents?.GetValue(container)
+                as ComponentCollection;
+
+            if (components == null)
+                return;
+
+            object contextService = null;
+
+            foreach (Component component in components)
             {
-                var objectExplorer = GetObjectExplorer();
-                if (objectExplorer == null)
+                if (component.GetType().FullName
+                    .Contains("ContextService"))
                 {
-                    MessageBox.Show("Object Explorer service not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    contextService = component;
+                    break;
                 }
-
-                var objectExplorerType = objectExplorer.GetType();
-
-                // Get Container
-                var piContainer = objectExplorerType.GetProperty("Container", BindingFlags.Public | BindingFlags.Instance);
-                var objectExplorerContainer = piContainer?.GetValue(objectExplorer);
-
-                if (objectExplorerContainer == null)
-                    throw new InvalidOperationException("Cannot access ObjectExplorer Container.");
-
-                // Get Components
-                var piComponents = objectExplorerContainer.GetType().GetProperty("Components", BindingFlags.Public | BindingFlags.Instance);
-                var components = piComponents?.GetValue(objectExplorerContainer) as ComponentCollection;
-
-                if (components == null)
-                    throw new InvalidOperationException("Cannot access ObjectExplorer Components.");
-
-                // Find ContextService
-                object contextService = null;
-                foreach (Component component in components)
-                {
-                    if (component.GetType().FullName.Contains("ContextService"))
-                    {
-                        contextService = component;
-                        break;
-                    }
-                }
-
-                if (contextService == null)
-                    throw new NullReferenceException("ContextService not found in ObjectExplorer.");
-
-                // Get ObjectExplorerContext
-                var piContext = contextService.GetType().GetProperty("ObjectExplorerContext", BindingFlags.Public | BindingFlags.Instance);
-                var objectExplorerContext = piContext?.GetValue(contextService);
-
-                if (objectExplorerContext == null)
-                    throw new InvalidOperationException("Cannot access ObjectExplorerContext.");
-
-                // Subscribe to CurrentContextChanged
-                var ei = objectExplorerContext.GetType().GetEvent("CurrentContextChanged", BindingFlags.Public | BindingFlags.Instance);
-                if (ei == null)
-                    throw new InvalidOperationException("CurrentContextChanged event not found.");
-
-                var mi = this.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                if (mi == null)
-                    throw new InvalidOperationException($"Method '{methodName}' not found in target instance.");
-
-                _handlerDelegate = Delegate.CreateDelegate(ei.EventHandlerType, this, mi);
-                ei.AddEventHandler(objectExplorerContext, _handlerDelegate);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hooking Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
-        public IObjectExplorerService GetObjectExplorer()
-        {
-            var serviceProvider = _package as System.IServiceProvider;
-            return serviceProvider?.GetService(typeof(IObjectExplorerService)) as IObjectExplorerService;
-        }
+            if (contextService == null)
+                return;
 
-        private void UnhookSelectionChanged()
-        {
-            try
-            {
-                if (_handlerDelegate == null)
-                    return;
+            var contextProperty =
+                contextService.GetType()
+                .GetProperty(
+                    "ObjectExplorerContext");
 
-                var objectExplorer = GetObjectExplorer();
-                if (objectExplorer == null)
-                    return;
+            var context =
+                contextProperty?.GetValue(
+                    contextService);
 
-                var objectExplorerType = objectExplorer.GetType();
-                var piContainer = objectExplorerType.GetProperty("Container", BindingFlags.Public | BindingFlags.Instance);
-                var objectExplorerContainer = piContainer?.GetValue(objectExplorer);
+            if (context == null)
+                return;
 
-                var piComponents = objectExplorerContainer?.GetType().GetProperty("Components", BindingFlags.Public | BindingFlags.Instance);
-                var components = piComponents?.GetValue(objectExplorerContainer) as ComponentCollection;
+            var eventInfo =
+                context.GetType()
+                .GetEvent(
+                    "CurrentContextChanged");
 
-                object contextService = null;
-                foreach (Component component in components)
-                {
-                    if (component.GetType().FullName.Contains("ContextService"))
-                    {
-                        contextService = component;
-                        break;
-                    }
-                }
+            if (eventInfo == null)
+                return;
 
-                var piContext = contextService?.GetType().GetProperty("ObjectExplorerContext", BindingFlags.Public | BindingFlags.Instance);
-                var objectExplorerContext = piContext?.GetValue(contextService);
+            var method =
+                GetType().GetMethod(
+                    methodName,
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
 
-                var ei = objectExplorerContext?.GetType().GetEvent("CurrentContextChanged", BindingFlags.Public | BindingFlags.Instance);
-                ei?.RemoveEventHandler(objectExplorerContext, _handlerDelegate);
+            _handlerDelegate =
+                Delegate.CreateDelegate(
+                    eventInfo.EventHandlerType,
+                    this,
+                    method);
 
-                _handlerDelegate = null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Unbinding Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        public void Dispose()
-        {
-            UnhookSelectionChanged();
-
-            GC.SuppressFinalize(this); // clean up other resources if needed
+            eventInfo.AddEventHandler(
+                context,
+                _handlerDelegate);
         }
 
         private void Provider_SelectionChanged(object sender, NodesChangedEventArgs args)
         {
-            try
-            {
-                if (args?.ChangedNodes == null || args.ChangedNodes.Count == 0)
-                    return;
+            if (args == null ||
+                args.ChangedNodes == null ||
+                args.ChangedNodes.Count == 0)
+                return;
 
-                var node = args.ChangedNodes[0];
-                if (node == null)
-                    return;
+            var node = args.ChangedNodes[0];
 
-                string fullyQualifiedName = GetProperty(node, "InvariantName");
-                string nodePath = GetProperty(node, "UrnPath"); // parse to determine if in Table or View tree node
+            string name =
+                GetProperty(node, "InvariantName");
 
-                if (nodePath.EndsWith("View", StringComparison.OrdinalIgnoreCase) || nodePath.EndsWith("Table", StringComparison.OrdinalIgnoreCase))
-                {
-                    Debug.WriteLine("A View ot Table selected.");
-                    SelectedSmoNode = fullyQualifiedName; // use for sql shortcut that will reference highlighed table
-                }
-                else
-                {
-                    SelectedSmoNode = string.Empty; // reset
-                }
+            string urn =
+                GetProperty(node, "UrnPath");
 
-                Debug.WriteLine($@"Selected Table\View: {SelectedSmoNode}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            bool isTable =
+                urn?.EndsWith(
+                    "Table",
+                    StringComparison.OrdinalIgnoreCase)
+                == true;
+
+            bool isView =
+                urn?.EndsWith(
+                    "View",
+                    StringComparison.OrdinalIgnoreCase)
+                == true;
+
+            SelectedSmoNode =
+                isTable || isView
+                ? name
+                : null;
+
+            SelectionChanged?.Invoke(
+                this,
+                SelectedSmoNode);
         }
 
-        private string GetProperty(INodeInformation node, string propertyName, bool debugAll = false)
+        private string GetProperty(INodeInformation node, string propertyName)
         {
-            if (node == null) return null;
+            if (node == null)
+                return null;
+
+            var pi =
+                node.GetType()
+                .GetProperty(
+                    propertyName);
+
+            return pi?
+                .GetValue(node)?
+                .ToString();
+        }
+
+        public void Dispose()
+        {
+            var objectExplorer =
+                GetObjectExplorer();
+
+            if (objectExplorer == null ||
+                _handlerDelegate == null)
+                return;
 
             try
             {
-                if (debugAll)
+                var container =
+                    objectExplorer.GetType()
+                    .GetProperty("Container")
+                    ?.GetValue(objectExplorer);
+
+                var components =
+                    container?.GetType()
+                    .GetProperty("Components")
+                    ?.GetValue(container)
+                    as ComponentCollection;
+
+                object contextService = null;
+
+                foreach (Component component in components)
                 {
-                    // Dump all properties and their values for debugging
-                    var properties = node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                    Debug.WriteLine($"Available properties for {node.GetType().Name}:");
-                    foreach (var prop in properties)
+                    if (component.GetType().FullName
+                        .Contains("ContextService"))
                     {
-                        try
-                        {
-                            var value = prop.GetValue(node);
-                            Debug.WriteLine($"  {prop.Name}: {value}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine($"  {prop.Name}: Error: {ex.Message}");
-                        }
+                        contextService = component;
+                        break;
                     }
                 }
 
-                // Use reflection to access the property dynamically
-                var propertyInfo = node.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
-                if (propertyInfo != null)
-                {
-                    var value = propertyInfo.GetValue(node);
-                    return value?.ToString();
-                }
+                var context =
+                    contextService?.GetType()
+                    .GetProperty(
+                        "ObjectExplorerContext")
+                    ?.GetValue(contextService);
+
+                var evt =
+                    context?.GetType()
+                    .GetEvent(
+                        "CurrentContextChanged");
+
+                evt?.RemoveEventHandler(
+                    context,
+                    _handlerDelegate);
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.WriteLine($"Error accessing property '{propertyName}': {ex.Message}");
             }
-            return null;
         }
 
     }

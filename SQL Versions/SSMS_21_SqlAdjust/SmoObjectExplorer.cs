@@ -115,9 +115,7 @@ namespace SSMS_SqlAdjust
                 _handlerDelegate);
         }
 
-        private void Provider_SelectionChanged(
-            object sender,
-            NodesChangedEventArgs args)
+        private void Provider_SelectionChanged(object sender, NodesChangedEventArgs args)
         {
             if (args == null ||
                 args.ChangedNodes == null ||
@@ -154,9 +152,7 @@ namespace SSMS_SqlAdjust
                 SelectedSmoNode);
         }
 
-        private string GetProperty(
-            INodeInformation node,
-            string propertyName)
+        private string GetProperty(INodeInformation node, string propertyName)
         {
             if (node == null)
                 return null;
