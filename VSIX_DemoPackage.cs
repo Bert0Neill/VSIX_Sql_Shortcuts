@@ -82,7 +82,7 @@ namespace VSIX_SqlShortcuts
         // =====================================================
         static VSIX_DemoPackage()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += ResolveSsmsAssemblies;
+            // AppDomain.CurrentDomain.AssemblyResolve += ResolveSsmsAssemblies;
         }
 
         private static Assembly ResolveSsmsAssemblies(object sender, ResolveEventArgs args)
@@ -174,10 +174,11 @@ namespace VSIX_SqlShortcuts
 
             _objectExplorerHelper = CreateObjectExplorerHelper();
 
+            
             if (_objectExplorerHelper != null)
             {
-                //_objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
-                //_objectExplorerHelper.StartMonitoring();
+                _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
+                _objectExplorerHelper.StartMonitoring();
             }
 
 
@@ -186,12 +187,12 @@ namespace VSIX_SqlShortcuts
 
             LoadSqlShortcuts();
 
-            //await MonitorEditorWindow();
+            await MonitorEditorWindow();
             //await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
 
-            //await LoadVsStatusBarReference();
-            //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-            //StatusBarService.UpdateStatusBarText(message);
+            await LoadVsStatusBarReference();
+            string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
+            StatusBarService.UpdateStatusBarText(message);
         }
 
         private void ObjectExplorerSelectionChanged(object sender, string selectedNode)
