@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="SQL_Shortcuts21Plus.6e119852-31e0-4299-8f9b-d64c8f676537" Version="3.3" Language="en-US" Publisher="Bert O'Neill" />
+        <Identity Id="SQL_Shortcuts21Plus.6e119852-31e0-4299-8f9b-d64c8f676537" Version="3.5" Language="en-US" Publisher="Bert O'Neill" />
         <DisplayName>SQL_Shortcuts_SSMS21+</DisplayName>
         <Description xml:space="preserve">The SSMS 21+ SQL Shortcuts extension enhances SQL Server Management Studio by allowing users to create and execute custom SQL shortcuts directly within the editor using simple trigger keys. It dynamically injects the currently selected table or view from Object Explorer into SQL templates, enabling faster query generation. The extension also supports advanced SQL templating with C#-based expressions, allowing runtime evaluation of date and logic-based placeholders. Users can manage, test, and export their shortcuts through a built-in configuration interface within SSMS. Shortcuts are executed using a lightweight backtick trigger system, replacing abbreviations with full SQL statements instantly. Overall, it streamlines repetitive SQL development by combining context-aware automation with reusable query templates.</Description>
         <License>License.txt</License>

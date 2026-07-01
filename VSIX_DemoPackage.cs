@@ -96,23 +96,23 @@ namespace VSIX_SqlShortcuts
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            _objectExplorerHelper = CreateObjectExplorerHelper();
-            if (_objectExplorerHelper != null)
-            {
-                _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
-                _objectExplorerHelper.StartMonitoring();
-            }
+            //_objectExplorerHelper = CreateObjectExplorerHelper();
+            //if (_objectExplorerHelper != null)
+            //{
+            //    _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
+            //    _objectExplorerHelper.StartMonitoring();
+            //}
 
-            string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
-            SimpleLogger.Info(Resource.Package_Initializing);
+            //string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
+            //SimpleLogger.Info(Resource.Package_Initializing);
 
-            LoadSqlShortcuts();
-            await MonitorEditorWindow();
-            await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
+            //LoadSqlShortcuts();
+            //await MonitorEditorWindow();
+            //await VSIX_SqlShortcuts.Commands.cmdShortcuts.InitializeAsync(this);
 
-            await LoadVsStatusBarReference();
-            string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
-            StatusBarService.UpdateStatusBarText(message);
+            //await LoadVsStatusBarReference();
+            //string message = string.Format(Resource.StatusBar_Status, $"SQL Shortcut Ext. - Log file: {logFilename}");
+            //StatusBarService.UpdateStatusBarText(message);
         }
 
         private void ObjectExplorerSelectionChanged(object sender, string selectedNode)
