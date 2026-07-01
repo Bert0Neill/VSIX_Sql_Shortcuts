@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace SSMS_22_SqlAdjust
+namespace SSMS_SqlAdjust
 {
     public class SmoObjectExplorer : IObjectExplorerHelper
     {

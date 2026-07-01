@@ -38,9 +38,8 @@
     <AssemblyOriginatorKeyFile>SqlShortcuts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=17.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    <Reference Include="ObjectExplorer">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\ObjectExplorer.dll</HintPath>
     </Reference>
     <Reference Include="SqlWorkbench.Interfaces">
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
