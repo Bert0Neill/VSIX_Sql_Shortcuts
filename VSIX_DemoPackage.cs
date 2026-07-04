@@ -124,45 +124,32 @@ namespace VSIX_SqlShortcuts
 
         private IObjectExplorerHelper CreateObjectExplorerHelper()
         {
-            string version = GetSsmsMajorVersion();
-
-            string assemblyName;
-            string typeName;
-
-            if (version == "22")
-            {
-                assemblyName = "SSMS_22_SqlAdjust.dll";
-                typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
-            }
-            else
-            {
-                assemblyName = "SSMS_21_SqlAdjust.dll";
-                typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
-            }
-
-            string dllPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), assemblyName);
-            var asm = Assembly.LoadFrom(dllPath);
-
-            // testing.....
             try
             {
-                var types = asm.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                foreach (var loaderEx in ex.LoaderExceptions)
+                string version = GetSsmsMajorVersion();
+
+                string assemblyName;
+                string typeName;
+
+                if (version == "22")
                 {
-                    Debug.WriteLine(loaderEx);
+                    assemblyName = "SSMS_22_SqlAdjust.dll";
+                    typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
                 }
-            }
+                else
+                {
+                    assemblyName = "SSMS_21_SqlAdjust.dll";
+                    typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
+                }
 
-            var type = asm.GetType(typeName);
+                string dllPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), assemblyName);
+                var asm = Assembly.LoadFrom(dllPath);
 
-            try
-            {
+                var type = asm.GetType(typeName);
+
                 return (IObjectExplorerHelper)Activator.CreateInstance(type, this);
-
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SimpleLogger.Error($"Error creating Object Explorer Helper: {ex.Message}");
                 return null;
