@@ -160,16 +160,9 @@ namespace VSIX_SqlShortcuts
         {
             try
             {
-                string exe =
-                    System.Diagnostics.Process.GetCurrentProcess()
-                    .MainModule.FileName;
-
-                FileVersionInfo info =
-                    FileVersionInfo
-                    .GetVersionInfo(exe);
-
-                return info.ProductMajorPart
-                    .ToString();
+                string exe = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(exe);
+                return info.ProductMajorPart.ToString();
             }
             catch
             {
