@@ -1,4 +1,6 @@
-﻿User Guide (open MD in browser) | Installer Guide\instructions
+﻿Microsoft.SqlServer.Management.SqlStudio | [18.0,) | Amd64
+
+User Guide (open MD in browser) | Installer Guide\instructions
 
 Demo version
 Seperate out SSMS versions to purchase

@@ -72,6 +72,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseWinFormsOutOfProcDesigner>False</UseWinFormsOutOfProcDesigner>
+    <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
+    <CopyVsixExtensionLocation>C:\Program Files\Microsoft SQL Server Management Studio 21\Release\Common7\IDE\Extensions\SQLShortcuts21</CopyVsixExtensionLocation>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Services\SsmsHelper.cs" />
