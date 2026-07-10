@@ -49,9 +49,7 @@ namespace VSIX_SqlShortcuts.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            SyncfusionLicenseProvider.RegisterLicense(
-                SQL_Shortcuts.Properties.Settings.Default.SyncfusionKey);
-
+            SyncfusionLicenseProvider.RegisterLicense(SQL_Shortcuts.Properties.Settings.Default.SyncfusionKey);
             var frm = new frmShortcuts();
             frm.ShowDialog();   // or frm.Show();
         }
