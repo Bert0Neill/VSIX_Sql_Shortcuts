@@ -40,6 +40,7 @@
             d:Source="Project"
             d:ProjectName="SSMS_SqlAdjust_Interfaces"
             Path="|SSMS_SqlAdjust_Interfaces|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="SSMS_22_SqlAdjust" Path="|SSMS_22_SqlAdjust|" AssemblyName="|SSMS_22_SqlAdjust;AssemblyName|" />
     </Assets>
 
 </PackageManifest>

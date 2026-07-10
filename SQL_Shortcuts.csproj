@@ -550,6 +550,8 @@
     <ProjectReference Include="SQL Versions\SSMS_22_SqlAdjust\SSMS_22_SqlAdjust.csproj">
       <Project>{d683b503-995f-463b-b75e-2c83caa30dff}</Project>
       <Name>SSMS_22_SqlAdjust</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="SQL Versions\SSMS_SqlAdjust_Interfaces\SSMS_SqlAdjust_Interfaces.csproj">
       <Project>{64b5fbbb-a832-46ba-bb61-bdfaf4a15286}</Project>
