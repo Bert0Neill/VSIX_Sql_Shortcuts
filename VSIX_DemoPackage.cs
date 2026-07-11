@@ -96,11 +96,27 @@ namespace VSIX_SqlShortcuts
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            SimpleLogger.Error($"InitializeAsync Called");
+
             _objectExplorerHelper = CreateObjectExplorerHelper();
+
+            SimpleLogger.Error($"_objectExplorerHelper is NULL - {_objectExplorerHelper is null}");
+
             if (_objectExplorerHelper != null)
             {
                 _objectExplorerHelper.SelectionChanged += ObjectExplorerSelectionChanged;
-                _objectExplorerHelper.StartMonitoring();
+
+                for (int i = 0; i < 30; i++)
+                {
+                    if (_objectExplorerHelper.StartMonitoring())
+                    {
+                        SimpleLogger.Info("Object Explorer monitoring started.");
+                        break;
+                    }
+
+                    await Task.Delay(500);
+                }
+
             }
 
             string logFilename = SimpleLogger.Initialize(SQL_Shortcuts.Properties.Settings.Default.LogFilename);
@@ -120,41 +136,76 @@ namespace VSIX_SqlShortcuts
             SsmsState.Instance.SelectedTableOrView = selectedNode;
 
             Debug.WriteLine($"Selected SMO Node = {selectedNode}");
+            SimpleLogger.Info($"Selected SMO Node = {selectedNode}");
         }
 
         private IObjectExplorerHelper CreateObjectExplorerHelper()
         {
             try
             {
+                SimpleLogger.Error($"CreateObjectExplorerHelper Called");
+
                 string version = GetSsmsMajorVersion();
+                string assemblyName = version == "22" ? "SSMS_22_SqlAdjust.dll" : "SSMS_21_SqlAdjust.dll";
 
-                string assemblyName;
-                string typeName;
+                string mainAssemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string dllPath = Path.Combine(mainAssemblyDir, assemblyName);
 
-                if (version == "22")
+                // Explicit check to log the exact deployment path
+                if (!File.Exists(dllPath))
                 {
-                    assemblyName = "SSMS_22_SqlAdjust.dll";
-                    typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
-                }
-                else
-                {
-                    assemblyName = "SSMS_21_SqlAdjust.dll";
-                    typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
+                    SimpleLogger.Error($"Helper DLL NOT FOUND at: {dllPath}");
+                    SimpleLogger.Error($"Current extension directory: {mainAssemblyDir}");
+                    return null;
                 }
 
-                string dllPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), assemblyName);
                 var asm = Assembly.LoadFrom(dllPath);
-
-                var type = asm.GetType(typeName);
-
+                var type = asm.GetType("SSMS_SqlAdjust.SmoObjectExplorer");
                 return (IObjectExplorerHelper)Activator.CreateInstance(type, this);
             }
             catch (Exception ex)
             {
-                SimpleLogger.Error($"Error creating Object Explorer Helper: {ex.Message}");
+                SimpleLogger.Error($"Failed to load helper: {ex}");
                 return null;
             }
         }
+
+        //private IObjectExplorerHelper CreateObjectExplorerHelper()
+        //{
+        //    try
+        //    {
+        //        string version = GetSsmsMajorVersion();
+
+        //        string assemblyName;
+        //        string typeName;
+
+        //        if (version == "22")
+        //        {
+        //            assemblyName = "SSMS_22_SqlAdjust.dll";
+        //            typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
+        //        }
+        //        else
+        //        {
+        //            assemblyName = "SSMS_21_SqlAdjust.dll";
+        //            typeName = "SSMS_SqlAdjust.SmoObjectExplorer";
+        //        }
+
+        //        string dllPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), assemblyName);
+
+        //        SimpleLogger.Error($"Extension assembly path {dllPath}");
+
+        //        var asm = Assembly.LoadFrom(dllPath);
+
+        //        var type = asm.GetType(typeName);
+
+        //        return (IObjectExplorerHelper)Activator.CreateInstance(type, this);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SimpleLogger.Error($"Error creating Object Explorer Helper: {ex.Message}");
+        //        return null;
+        //    }
+        //}
 
         private string GetSsmsMajorVersion()
         {
@@ -240,6 +291,7 @@ namespace VSIX_SqlShortcuts
         private void OnWindowActivated(EnvDTE.Window gotFocus, EnvDTE.Window lostFocus)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 const string ACCEPT_FILE_TYPE = "SQL";
@@ -248,6 +300,7 @@ namespace VSIX_SqlShortcuts
                 if (gotFocus?.Document == null)
                 {
                     Debug.WriteLine("VSIX Package: No document in focus");
+                    SimpleLogger.Info("VSIX Package: No document in focus");
                     return;
                 }
 
@@ -261,17 +314,20 @@ namespace VSIX_SqlShortcuts
                 }
                 catch (Exception ex)
                 {
-                    SimpleLogger.Error($"Error checking document type: {ex.Message}");
+                    SimpleLogger.Error($"Error checking document type: {ex.Message}");                    
                     return;
                 }
 
                 if (isSqlFile)
                 {
                     Debug.WriteLine("VSIX Package: SQL file detected, setting up event handlers");
+                    SimpleLogger.Info("VSIX Package: SQL file detected, setting up event handlers");
+
                     var componentModel = this.GetService(typeof(SComponentModel)) as IComponentModel;
                     if (componentModel == null)
                     {
                         Debug.WriteLine("VSIX Package: ComponentModel is null");
+                        SimpleLogger.Info("VSIX Package: ComponentModel is null");
                         return;
                     }
 
@@ -281,6 +337,7 @@ namespace VSIX_SqlShortcuts
                     if (textManager == null || editorFactory == null)
                     {
                         Debug.WriteLine("VSIX Package: TextManager or EditorFactory is null");
+                        SimpleLogger.Info("VSIX Package: TextManager or EditorFactory is null");
                         return;
                     }
 
@@ -289,6 +346,7 @@ namespace VSIX_SqlShortcuts
                     if (ErrorHandler.Failed(result) || textView == null)
                     {
                         Debug.WriteLine($"VSIX Package: Failed to get active text view, result: {result}");
+                        SimpleLogger.Info($"VSIX Package: Failed to get active text view, result: {result}");
                         return;
                     }
 
@@ -296,6 +354,7 @@ namespace VSIX_SqlShortcuts
                     if (wpfTextView != null)
                     {
                         Debug.WriteLine("VSIX Package: Setting up text view filter");
+                        SimpleLogger.Info("VSIX Package: Setting up text view filter");
                         IVsTextView nativeTextView = editorFactory.GetViewAdapter(wpfTextView);
                         if (nativeTextView != null)
                         {
@@ -308,11 +367,14 @@ namespace VSIX_SqlShortcuts
                             if (result == VSConstants.S_OK)
                             {
                                 ((ShortcutEvaluation)_textViewFilter)._nextFilter = nextCommandFilter;
-                                Debug.WriteLine("VSIX Package: Tab key filter installed successfully");
+                                Debug.WriteLine("VSIX Package: Tab key filter installed successfully");                                
+                                SimpleLogger.Info("VSIX Package: Tab key filter installed successfully");
+
                             }
                             else
                             {
                                 Debug.WriteLine($"VSIX Package: Failed to install tab key filter, result: {result}");
+                                SimpleLogger.Info($"VSIX Package: Failed to install tab key filter, result: {result}");
                             }
                         }
                     }

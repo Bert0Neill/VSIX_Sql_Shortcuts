@@ -9,7 +9,7 @@ namespace SSMS_SqlAdjust_Interfaces
 
         event EventHandler<string> SelectionChanged;
 
-        void StartMonitoring();
+        bool StartMonitoring();
 
     }
 }

@@ -20,9 +20,9 @@ namespace SSMS_SqlAdjust
             _package = package;
         }
 
-        public void StartMonitoring()
+        public bool StartMonitoring()
         {
-            HookSelectionChanged(nameof(Provider_SelectionChanged));
+            return HookSelectionChanged(nameof(Provider_SelectionChanged));
         }
 
         private IObjectExplorerService GetObjectExplorer()
@@ -32,43 +32,34 @@ namespace SSMS_SqlAdjust
                 as IObjectExplorerService;
         }
 
-        private void HookSelectionChanged(string methodName)
+        private bool HookSelectionChanged(string methodName)
         {
             var objectExplorer = GetObjectExplorer();
 
             if (objectExplorer == null)
-                return;
+                return false;
 
-            var objectExplorerType =
-                objectExplorer.GetType();
+            var objectExplorerType = objectExplorer.GetType();
 
-            var piContainer =
-                objectExplorerType.GetProperty(
-                    "Container");
+            var piContainer = objectExplorerType.GetProperty("Container");
 
-            var container =
-                piContainer?.GetValue(objectExplorer);
+            var container = piContainer?.GetValue(objectExplorer);
 
             if (container == null)
-                return;
+                return false;
 
-            var piComponents =
-                container.GetType().GetProperty(
-                    "Components");
+            var piComponents = container.GetType().GetProperty("Components");
 
-            var components =
-                piComponents?.GetValue(container)
-                as ComponentCollection;
+            var components = piComponents?.GetValue(container) as ComponentCollection;
 
             if (components == null)
-                return;
+                return false;
 
             object contextService = null;
 
             foreach (Component component in components)
             {
-                if (component.GetType().FullName
-                    .Contains("ContextService"))
+                if (component.GetType().FullName.Contains("ContextService"))
                 {
                     contextService = component;
                     break;
@@ -76,33 +67,32 @@ namespace SSMS_SqlAdjust
             }
 
             if (contextService == null)
-                return;
+                return false;
 
             var contextProperty =
-                contextService.GetType()
-                .GetProperty(
-                    "ObjectExplorerContext");
+                contextService.GetType().GetProperty("ObjectExplorerContext");
 
-            var context =
-                contextProperty?.GetValue(
-                    contextService);
+            var context = contextProperty?.GetValue(contextService);
 
             if (context == null)
-                return;
+                return false;
 
             var eventInfo =
-                context.GetType()
-                .GetEvent(
-                    "CurrentContextChanged");
+                context.GetType().GetEvent("CurrentContextChanged");
 
             if (eventInfo == null)
-                return;
+                return false;
+
+            //
+            // Prevent duplicate subscriptions
+            //
+            if (_handlerDelegate != null)
+                return true;
 
             var method =
                 GetType().GetMethod(
                     methodName,
-                    BindingFlags.Instance |
-                    BindingFlags.NonPublic);
+                    BindingFlags.Instance | BindingFlags.NonPublic);
 
             _handlerDelegate =
                 Delegate.CreateDelegate(
@@ -113,6 +103,8 @@ namespace SSMS_SqlAdjust
             eventInfo.AddEventHandler(
                 context,
                 _handlerDelegate);
+
+            return true;
         }
 
         private void Provider_SelectionChanged(object sender, NodesChangedEventArgs args)
